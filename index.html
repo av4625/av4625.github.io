@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Home</title>
+
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+        <link rel="stylesheet" href="css/floor_plan.css?ver=<?php echo time();?>" type="text/css"/>
+
+        <script src="javascript/jquery-3.2.1.min.js" type="text/javascript"></script>
+        <script src="javascript/room_colour.js?ver=<?php echo time();?>" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function()
+            {
+                // Add Temperature to rooms
+                ajax_calls();
+
+                // Check for updated temperture every 10 seconds
+                setInterval(function()
+                {
+                    ajax_calls();
+                }, 1000*10);
+            });
+
+            // Get temperature from rooms, format it and set background colour for rooms
+            function set_temperature(room, temp)
+            {
+                // Set temperature rounded to 1 decimal place and with '*C' after it
+                $('div#' + room + ' p.temperature').html(temp.toFixed(1) + '&#8451;');
+
+                if (room === 'spare_bedroom' || room === 'study')
+                {
+                    // Set the colour of the room and room hall
+                    $('div.' + room).css('background-color', generate_room_colour(temp));
+                }
+                else
+                {
+                    // Set the colour of the room
+                    $('div#' + room).css('background-color', generate_room_colour(temp));
+                }
+
+                // Set emoji
+                $('div#' + room + ' img#' + room + '_emoji').attr('src', getImage($('div#' + room).css('background-color')));
+            }
+
+            // Get temperature data from the database
+            function ajax_calls()
+            {
+                var php_files =
+                {
+                    'php/kitchen.php': 'kitchen',
+                    'php/bedroom.php': 'bedroom',
+                    'php/spare_bedroom.php': 'spare_bedroom',
+                    'php/study.php': 'study'
+
+                };
+
+                Object.keys(php_files).forEach(function(key)
+                {
+                    // Get kitchen temperature
+                    $.ajax({
+                        type: 'POST',
+                        url: key,
+                        success: function(temp)
+                        {
+                            set_temperature(php_files[key], parseFloat(temp));
+                        }
+                    });
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div id="outside_edge">
+            <div id="bathroom" class="room">
+                <p class="room_name">Bathroom</p>
+            </div>
+            <div id="kitchen" class="room">
+                <p class="room_name">Kitchen</p>
+                <p class="temperature"></p>
+                <img id="kitchen_emoji" class="room_emoji" src=""/>
+            </div>
+            <div id="hall" class="room">
+                <p class="room_name">Hall</p>
+            </div>
+            <div id="bedroom" class="room">
+                <p class="room_name">Bedroom</p>
+                <p class="temperature"></p>
+                <img id="bedroom_emoji" class="room_emoji" src=""/>
+            </div>
+            <div id="closet" class="room">
+                <p class="room_name">Closet</p>
+            </div>
+            <div id="study" class="room study">
+                <p class="room_name">Study</p>
+                <p class="temperature"></p>
+                <img id="study_emoji" class="room_emoji" src=""/>
+            </div>
+            <div id="study_hall" class="room study"></div>
+            <div id="spare_bedroom" class="room bedroom_two">
+                <p class="room_name">Spare Bedroom</p>
+                <p class="temperature"></p>
+                <img id="spare_bedroom_emoji" class="room_emoji" src=""/>
+            </div>
+            <div id="spare_bedroom_hall" class="room bedroom_two"></div>
+        </div>
+    </body>
+</html>
