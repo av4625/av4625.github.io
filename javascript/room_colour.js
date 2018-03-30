@@ -22,7 +22,8 @@ function generate_room_colour(temperature)
     }
 }
 
-function getImage(color)
+// Return the image to be displayed depening on background colour
+function get_image(color)
 {
     if (color == 'rgb(255, 68, 68)')
     {
@@ -35,5 +36,19 @@ function getImage(color)
     else
     {
         return '';
+    }
+}
+
+// Set image fore the room
+function set_image(img_id, image)
+{
+    if (image != '')
+    {
+        $(img_id).attr('src', image);
+        $(img_id).show();
+    }
+    else
+    {
+        $(img_id).hide();
     }
 }

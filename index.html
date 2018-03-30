@@ -40,7 +40,7 @@
                 }
 
                 // Set emoji
-                $('div#' + room + ' img#' + room + '_emoji').attr('src', getImage($('div#' + room).css('background-color')));
+                set_image('div#' + room + ' img#' + room + '_emoji', get_image($('div#' + room).css('background-color')));
             }
 
             // Get temperature data from the database
