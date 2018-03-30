@@ -63,7 +63,7 @@ div#hall {
 /*
     Bedroom One
 */
-div#bedroom_one {
+div#bedroom {
     background: white;
     width: 37%;
     height: 40%;
@@ -112,7 +112,7 @@ div#study_hall {
 /*
     Bedroom Two
 */
-div#bedroom_two {
+div#spare_bedroom {
     background: white;
     width: 27%;
     height: 54%;
@@ -123,7 +123,7 @@ div#bedroom_two {
     border-right: 2px solid black;
 }
 
-div#bedroom_two_hall {
+div#spare_bedroom_hall {
     background: transparent;
     width: 20%;
     height: 14%;

@@ -6,7 +6,7 @@
 function generate_room_colour(temperature)
 {
     var upper_limit = 22;
-    var lower_limit = 20;
+    var lower_limit = 19.5;
 
     if (temperature > upper_limit)
     {
