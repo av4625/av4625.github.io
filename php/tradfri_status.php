@@ -16,10 +16,10 @@ $bedroom_lamp = `coap-client -m get -u "google" -k "dsqtsiIgba2IaccE" "coaps://1
 $bedroom_lamp = trim(preg_replace('/\s+/', ' ', $bedroom_lamp));
 
 $json_array = (object) [
-    'kitchen' => $kitchen,
-    'living_room' => $living_room,
-    'bedroom' => $bedroom,
-    'bedroom_lamp' => $bedroom_lamp
+    'kitchen' => json_decode($kitchen),
+    'living_room' => json_decode($living_room),
+    'bedroom' => json_decode($bedroom),
+    'bedroom_lamp' => json_decode($bedroom_lamp)
 ];
 
 echo(json_encode($json_array));

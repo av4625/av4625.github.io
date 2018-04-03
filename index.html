@@ -43,6 +43,12 @@
                 set_image('div#' + room + ' img#' + room + '_emoji', get_image($('div#' + room).css('background-color')));
             }
 
+            // Set wether the lights are on or off
+            function set_lights(light_status)
+            {
+                console.log(light_status['kitchen']);
+            }
+
             // Get temperature data from the database
             function ajax_calls()
             {
@@ -51,7 +57,8 @@
                     'php/kitchen.php': 'kitchen',
                     'php/bedroom.php': 'bedroom',
                     'php/spare_bedroom.php': 'spare_bedroom',
-                    'php/study.php': 'study'
+                    'php/study.php': 'study',
+                    'php/tradfri_status.php': ''
 
                 };
 
@@ -61,9 +68,16 @@
                     $.ajax({
                         type: 'POST',
                         url: key,
-                        success: function(temp)
+                        success: function(result)
                         {
-                            set_temperature(php_files[key], parseFloat(temp));
+                            if (key === 'php/tradfri_status.php')
+                            {
+                                set_lights(JSON.parse(result));
+                            }
+                            else
+                            {
+                                set_temperature(php_files[key], parseFloat(result));
+                            }
                         }
                     });
                 });
