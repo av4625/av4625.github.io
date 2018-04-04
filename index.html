@@ -23,24 +23,31 @@
             });
 
             // Get temperature from rooms, format it and set background colour for rooms
-            function set_temperature(room, temp)
+            function set_temperature(data)
             {
-                // Set temperature rounded to 1 decimal place and with '*C' after it
-                $('div#' + room + ' p.temperature').html(temp.toFixed(1) + '&#8451;');
-
-                if (room === 'spare_bedroom' || room === 'study')
+                Object.keys(data).forEach(function(room)
                 {
-                    // Set the colour of the room and room hall
-                    $('div.' + room).css('background-color', generate_room_colour(temp));
-                }
-                else
-                {
-                    // Set the colour of the room
-                    $('div#' + room).css('background-color', generate_room_colour(temp));
-                }
+                    var temp = parseFloat(data[room]['temperature']);
 
-                // Set emoji
-                set_image('div#' + room + ' img#' + room + '_emoji', get_image($('div#' + room).css('background-color')));
+                    var is_old = is_date_old(data[room]['date']);
+
+                    // Set temperature rounded to 1 decimal place and with '*C' after it
+                    $('div#' + room + ' p.temperature').html(temp.toFixed(1) + '&#8451;');
+
+                    if (room === 'spare_bedroom' || room === 'study')
+                    {
+                        // Set the colour of the room and room hall
+                        $('div.' + room).css('background-color', generate_room_colour(temp, is_old));
+                    }
+                    else
+                    {
+                        // Set the colour of the room
+                        $('div#' + room).css('background-color', generate_room_colour(temp, is_old));
+                    }
+
+                    // Set emoji
+                    set_image('div#' + room + ' img#' + room + '_emoji', get_image($('div#' + room).css('background-color'), is_old));
+                });
             }
 
             // Set wether the lights are on or off
@@ -52,35 +59,29 @@
             // Get temperature data from the database
             function ajax_calls()
             {
-                var php_files =
-                {
-                    'php/kitchen.php': 'kitchen',
-                    'php/bedroom.php': 'bedroom',
-                    'php/spare_bedroom.php': 'spare_bedroom',
-                    'php/study.php': 'study',
-                    'php/tradfri_status.php': ''
+                var php_files = ['php/get_temperature.php', 'php/tradfri_status.php'];
 
-                };
-
-                Object.keys(php_files).forEach(function(key)
+                for (var i = 0; i < php_files.length; i++)
                 {
                     // Get kitchen temperature
                     $.ajax({
                         type: 'POST',
-                        url: key,
+                        url: php_files[i],
                         success: function(result)
                         {
-                            if (key === 'php/tradfri_status.php')
+                            var json = JSON.parse(result);
+
+                            if (this.url === 'php/tradfri_status.php')
                             {
-                                set_lights(JSON.parse(result));
+                                set_lights(json);
                             }
                             else
                             {
-                                set_temperature(php_files[key], parseFloat(result));
+                                set_temperature(json);
                             }
                         }
                     });
-                });
+                }
             }
         </script>
     </head>
