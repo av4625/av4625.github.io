@@ -4,9 +4,9 @@ $json_array = [];
 
 $light_ids =
 [
-    'kitchen' => '65548',
-    'living_room' => '65553',
-    'bedroom' => '65570',
+    'kitchen_light' => '65548',
+    'living_room_light' => '65553',
+    'bedroom_light' => '65570',
     'bedroom_lamp' => '65561'
 ];
 

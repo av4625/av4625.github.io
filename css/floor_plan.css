@@ -48,6 +48,26 @@ div#kitchen {
 }
 
 /*
+    Kitchen Light Emoji Location
+*/
+img#kitchen_light_emoji {
+    position: absolute;
+    top: 12.5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/*
+    Living Room Light Emoji Location
+*/
+img#living_room_light_emoji {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/*
     Hall
 */
 div#hall {
@@ -61,7 +81,7 @@ div#hall {
 }
 
 /*
-    Bedroom One
+    Bedroom
 */
 div#bedroom {
     background: white;
@@ -72,6 +92,25 @@ div#bedroom {
     border-top: 2px solid black;
     border-bottom: 2px solid black;
     border-right: 2px solid black;
+}
+
+/*
+    Bedroom One Light Emoji Location
+*/
+img#bedroom_light_emoji {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/*
+    Bedroom One Lamp Emoji Location
+*/
+img#bedroom_lamp_emoji {
+    position: absolute;
+    right: 1%;
+    bottom: 1%;
 }
 
 /*
@@ -110,7 +149,7 @@ div#study_hall {
 }
 
 /*
-    Bedroom Two
+    Spare Bedroom
 */
 div#spare_bedroom {
     background: white;
@@ -161,5 +200,12 @@ img.room_emoji {
     top: calc(50% + 20px);
     left: 50%;
     transform: translateX(-50%);
+    width: 22.5%;
+}
+
+/*
+    Light Image
+*/
+img.light_emoji {
     width: 22.5%;
 }

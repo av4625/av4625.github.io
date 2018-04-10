@@ -53,7 +53,18 @@
             // Set wether the lights are on or off
             function set_lights(light_status)
             {
-                console.log(light_status['kitchen']);
+                Object.keys(light_status).forEach(function(light)
+                {
+                    if (light_status[light][3311][0][5850])
+                    {
+                        $('img#' + light + '_emoji').attr('src', 'images/light_bulb.png');
+                        $('img#' + light + '_emoji').show();
+                    }
+                    else
+                    {
+                        $('img#' + light + '_emoji').hide();
+                    }
+                });
             }
 
             // Get temperature data from the database
@@ -95,6 +106,8 @@
                 <p class="room_name">Kitchen</p>
                 <p class="temperature"></p>
                 <img id="kitchen_emoji" class="room_emoji" src=""/>
+                <img id="kitchen_light_emoji" class="light_emoji" src=""/>
+                <img id="living_room_light_emoji" class="light_emoji" src=""/>
             </div>
 
             <div id="hall" class="room">
@@ -105,6 +118,8 @@
                 <p class="room_name">Bedroom</p>
                 <p class="temperature"></p>
                 <img id="bedroom_emoji" class="room_emoji" src=""/>
+                <img id="bedroom_light_emoji" class="light_emoji" src=""/>
+                <img id="bedroom_lamp_emoji" class="light_emoji" src=""/>
             </div>
 
             <div id="closet" class="room">
