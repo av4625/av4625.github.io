@@ -10,6 +10,9 @@
         <script src="javascript/jquery-3.2.1.min.js" type="text/javascript"></script>
         <script src="javascript/room_colour.js?ver=<?php echo time();?>" type="text/javascript"></script>
         <script type="text/javascript">
+
+            var living_room_light_rgb = [0, 0, 0];
+
             $(document).ready(function()
             {
                 // Add Temperature to rooms
@@ -53,58 +56,42 @@
             // Set wether the lights are on or off
             function set_lights(light_status)
             {
+                // Loop through json returned from tradfri
                 Object.keys(light_status).forEach(function(light)
                 {
+                    // Check if the light is on
                     if (light_status[light][3311][0][5850])
                     {
-                        $('img#' + light + '_emoji').attr('src', 'images/light_bulb.png');
+                        if (light === 'living_room_light')
+                        {
+                            // Get colours of the living room light
+                            var hue = light_status[light][3311][0][5707] / 65535;
+                            var saturation = light_status[light][3311][0][5708] / 65535;
+                            var brightness = light_status[light][3311][0][5851] / 255;
+                            var rgb = hsv_to_rgb(hue, saturation, brightness);
+
+                            // If the colour has changed since last check draw the new image
+                            if (!are_arrays_equal(rgb, living_room_light_rgb))
+                            {
+                                set_bulb_colour('img#' + light + '_emoji', rgb);
+                                living_room_light_rgb = rgb;
+                            }
+                        }
+                        else
+                        {
+                            // Set image src as the light bulb image
+                            $('img#' + light + '_emoji').attr('src', 'images/light_bulb.png');
+                        }
+
+                        // Show image
                         $('img#' + light + '_emoji').show();
                     }
                     else
                     {
+                        // Hide image if the light is off
                         $('img#' + light + '_emoji').hide();
                     }
                 });
-            }
-
-            // Set colour of light bulb
-            function set_bulb_colour(img_id, rgb_colour)
-            {
-                var img = new Image();
-
-                img.onload = function()
-                {
-                    var canvas = document.createElement('canvas');
-
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-
-                    var ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-
-                    var image_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    var data = image_data.data;
-
-                    for (var i = 0; i < data.length; i += 4)
-                    {
-                        if (data[i + 3] == 0)
-                        {
-                            continue;
-                        }
-
-                        if (data[i] > 200 && data[i + 2] < 100)
-                        {
-                            data[i] = rgb_colour.r;
-                            data[i + 1] = rgb_colour.g;
-                            data[i + 2] = rgb_colour.b;
-                        }
-                    }
-
-                    ctx.putImageData(data, 0, 0);
-                    // Set picture here
-                }
-
-                img.src = 'images/light_bulb.png';
             }
 
             // Get temperature data from the database
@@ -114,7 +101,6 @@
 
                 for (var i = 0; i < php_files.length; i++)
                 {
-                    // Get kitchen temperature
                     $.ajax({
                         type: 'POST',
                         url: php_files[i],
