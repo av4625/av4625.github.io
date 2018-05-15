@@ -97,21 +97,15 @@ function set_bulb_colour(img_id, rgb_colour)
         ctx.drawImage(img, 0, 0);
 
         var image_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        var data = image_data.data;
 
-        for (var i = 0; i < data.length; i += 4)
+        for (var i = 0; i < image_data.data.length; i += 4)
         {
-            if (data[i + 3] == 0)
-            {
-                continue;
-            }
-
             // If the pixel is yellow set it to the new colour
-            if (data[i] > 200 && data[i + 2] < 100)
+            if (image_data.data[i + 3] != 0 && (image_data.data[i] > 200 && image_data.data[i + 2] < 100))
             {
-                data[i] = rgb_colour[0];
-                data[i + 1] = rgb_colour[1];
-                data[i + 2] = rgb_colour[2];
+                image_data.data[i] = rgb_colour[0];
+                image_data.data[i + 1] = rgb_colour[1];
+                image_data.data[i + 2] = rgb_colour[2];
             }
         }
 

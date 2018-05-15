@@ -67,8 +67,7 @@
                             // Get colours of the living room light
                             var hue = light_status[light][3311][0][5707] / 65535;
                             var saturation = light_status[light][3311][0][5708] / 65535;
-                            var brightness = light_status[light][3311][0][5851] / 255;
-                            var rgb = hsv_to_rgb(hue, saturation, brightness);
+                            var rgb = hsv_to_rgb(hue, saturation, 1);
 
                             // If the colour has changed since last check draw the new image
                             if (!are_arrays_equal(rgb, living_room_light_rgb))
