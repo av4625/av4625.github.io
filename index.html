@@ -28,11 +28,16 @@
             // Get temperature from rooms, format it and set background colour for rooms
             function set_temperature(data)
             {
+                var total_temp = 0;
+                var number_of_rooms = 0;
+
                 Object.keys(data).forEach(function(room)
                 {
                     var temp = parseFloat(data[room]['temperature']);
-
                     var is_old = is_date_old(data[room]['date']);
+
+                    total_temp += temp;
+                    number_of_rooms++;
 
                     // Set temperature rounded to 1 decimal place and with '*C' after it
                     $('div#' + room + ' p.temperature').html(temp.toFixed(1) + '&#8451;');
@@ -51,6 +56,8 @@
                     // Set emoji
                     set_image('div#' + room + ' img#' + room + '_emoji', get_image($('div#' + room).css('background-color'), is_old));
                 });
+
+                $('p#average_house_temp').html((total_temp / number_of_rooms).toFixed(1) + '&#8451;');
             }
 
             // Set wether the lights are on or off
@@ -122,6 +129,10 @@
         </script>
     </head>
     <body>
+        <div id="information">
+            <h4 id="average_house_temp_header" class="info_headers">Average House Temperature</h4>
+            <p id="average_house_temp" class="info_p"></p>
+        </div>
         <div id="outside_edge">
             <div id="bathroom" class="room">
                 <p class="room_name">Bathroom</p>

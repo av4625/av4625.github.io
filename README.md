@@ -7,7 +7,7 @@ To do list
 - [x] Show room temperature
 - [x] Show light status
 - [x] Show light colour
-- [ ] Show average house temperature
+- [x] Show average house temperature
 - [ ] Show weekly average temperature
 - [ ] Use media queries
 - [ ] Show Monzo data

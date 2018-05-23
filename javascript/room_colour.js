@@ -113,6 +113,7 @@ function set_bulb_colour(img_id, rgb_colour)
 
         // Set the image src to the bulb with the new colour
         $(img_id).attr('src', canvas.toDataURL());
+        canvas = null;
     }
 
     img.src = 'images/light_bulb.png';
