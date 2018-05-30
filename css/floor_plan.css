@@ -23,6 +23,9 @@ div#information {
 
 /*
     Outside edge of the floor plan
+    Using padding for height as its 72% of the width of the page
+    Height is relative to the width of the page
+    Height of the page doesn't affect height
 */
 div#outside_edge {
     background: transparent;
