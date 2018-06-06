@@ -8,7 +8,7 @@ To do list
 - [x] Show light status
 - [x] Show light colour
 - [x] Show average house temperature
-- [ ] Show weekly average temperature
+- [x] Show weekly average temperature
 - [ ] Use media queries
 - [ ] Show Monzo data
 - [ ] Show weather data
