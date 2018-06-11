@@ -70,7 +70,7 @@ function is_date_old(date)
     var one_and_half_mins = 1.5 * 60 * 1000;
     var d = date.split(/[- :]/);
 
-    var date_to_check = new Date(d[0], d[1] - 1, d[2], d[3], d[4], d[5]);
+    var date_to_check = new Date(d[0], d[1] - 1, d[2], d[4], d[5], d[6]);
 
     if ((now - date_to_check) > one_and_half_mins)
     {

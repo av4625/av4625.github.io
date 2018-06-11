@@ -9,6 +9,8 @@
 
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+        <script src="javascript/jquery-3.2.1.min.js" type="text/javascript"></script>
+        <script src="javascript/helper_functions.js?ver=<?php echo time();?>" type="text/javascript"></script>
         <script>
             // Initialize Firebase
             var config = {
@@ -20,36 +22,45 @@
                 messagingSenderId: "847481592400"
             };
 
+            var number_of_rooms = 4;
+            var current_room_temperatures = {
+                'kitchen':       0,
+                'bedroom':       0,
+                'spare_bedroom': 0,
+                'study':         0
+            };
+            var weekly_average_room_temperatures = {
+                'kitchen':       0,
+                'bedroom':       0,
+                'spare_bedroom': 0,
+                'study':         0
+            };
+
+            $(document).ready(function()
+            {
+                listeners();
+            });
+
             firebase.initializeApp(config);
 
             var database = firebase.database();
-
-            var weeks_bedroom_ref = database.ref('bedroom/weeks');
-            weeks_bedroom_ref.orderByKey().limitToLast(1).once('value').then(function(snapshot)
-            {
-                console.log('Weekly', Object.keys(snapshot.val())[0]);
-                listen_for_new_week('bedroom', Object.keys(snapshot.val())[0]);
-            });
-
-            var current_bedroom_ref = database.ref('bedroom/current');
-            current_bedroom_ref.on('value', function(snapshot)
-            {
-                console.log('Current', snapshot.val());
-            });
 
             function get_week_number(key)
             {
                 return parseInt(key.substring(5, key.length));
             }
 
-            // Try saving week number as a value and checking that so we dont need to use the key
-            function listen_for_new_week(room, current_key)
+            // Set the average temperature, and listen for a new week
+            function set_average_temperature(room, data)
             {
+                var current_key = Object.keys(data)[0];
+
                 // If the current week is week_1 set the data
                 if (current_key === 'week_1')
                 {
                     // Set week one data
-                    console.log('Setting week 1 data');
+                    weekly_average_room_temperatures[room] = parseFloat(data[current_key]['total_temperature']) / parseFloat(data[current_key]['entries']);
+                    set_weekly_averages();
                 }
                 // Else, Get data from previous week and set the average data
                 else
@@ -59,7 +70,9 @@
                     week_before_ref.once('value').then(function(snapshot)
                     {
                         // Set average for previous week
-                        console.log('Setting previous week average');
+                        var data = snapshot.val();
+                        weekly_average_room_temperatures[room] = parseFloat(data['total_temperature']) / parseFloat(data['entries']);
+                        set_weekly_averages();
                     });
                 }
 
@@ -70,69 +83,122 @@
                 {
                     if (snapshot.val() != null)
                     {
-                        console.log('Listener for future week fired.');
                         week_after_ref.off();
                         listen_for_new_week(room, snapshot.val()['week_number']);
                     }
                 });
             }
+
+            // Sets the current average house temperature
+            function set_current_average()
+            {
+                var total_temp = 0;
+
+                Object.keys(current_room_temperatures).forEach(function(room)
+                {
+                    total_temp += current_room_temperatures[room];
+                });
+
+                $('p#average_house_temp').html((total_temp / number_of_rooms).toFixed(1) + '&#8451;');
+            }
+
+            // Sets the weekly average house temperature
+            function set_weekly_averages()
+            {
+                var total_temp = 0;
+
+                Object.keys(weekly_average_room_temperatures).forEach(function(room)
+                {
+                    total_temp += weekly_average_room_temperatures[room];
+                });
+
+                $('p#weekly_average_house_temp').html((total_temp / number_of_rooms).toFixed(1) + '&#8451;');
+            }
+
+            // Activate listeners to listen to firebase
+            function listeners()
+            {
+                var current_bedroom_ref = database.ref('bedroom/current');
+                current_bedroom_ref.on('value', function(snapshot)
+                {
+                    set_temperature('bedroom', snapshot.val());
+                });
+
+                var current_kitchen_ref = database.ref('kitchen/current');
+                current_kitchen_ref.on('value', function(snapshot)
+                {
+                    set_temperature('kitchen', snapshot.val());
+                });
+
+                var current_spare_bedroom_ref = database.ref('spare_bedroom/current');
+                current_spare_bedroom_ref.on('value', function(snapshot)
+                {
+                    set_temperature('spare_bedroom', snapshot.val());
+                });
+
+                var current_study_ref = database.ref('study/current');
+                current_study_ref.on('value', function(snapshot)
+                {
+                    set_temperature('study', snapshot.val());
+                });
+
+                var weeks_bedroom_ref = database.ref('bedroom/weeks');
+                weeks_bedroom_ref.orderByKey().limitToLast(1).once('value').then(function(snapshot)
+                {
+                    set_average_temperature('bedroom', snapshot.val());
+                });
+
+                var weeks_kitchen_ref = database.ref('kitchen/weeks');
+                weeks_kitchen_ref.orderByKey().limitToLast(1).once('value').then(function(snapshot)
+                {
+                    set_average_temperature('kitchen', snapshot.val());
+                });
+
+                var weeks_spare_bedroom_ref = database.ref('spare_bedroom/weeks');
+                weeks_spare_bedroom_ref.orderByKey().limitToLast(1).once('value').then(function(snapshot)
+                {
+                    set_average_temperature('spare_bedroom', snapshot.val());
+                });
+
+                var weeks_study_ref = database.ref('study/weeks');
+                weeks_study_ref.orderByKey().limitToLast(1).once('value').then(function(snapshot)
+                {
+                    set_average_temperature('study', snapshot.val());
+                });
+            }
         </script>
 
-        <script src="javascript/jquery-3.2.1.min.js" type="text/javascript"></script>
-        <script src="javascript/helper_functions.js?ver=<?php echo time();?>" type="text/javascript"></script>
         <script type="text/javascript">
 
             var living_room_light_rgb = [0, 0, 0];
 
-            $(document).ready(function()
+            // Sets the room temperature, called when database updates
+            function set_temperature(room, data)
             {
-                // Add Temperature to rooms
-                ajax_calls();
+                var is_old = is_date_old(data['date_time']);
+                var temperature = parseFloat(data['temperature']);
+                current_room_temperatures[room] = temperature;
 
-                // Check for updated temperture every 10 seconds
-                setInterval(function()
+                // Set temperature rounded to 1 decimal place and with '*C' after it
+                $('div#' + room + ' p.temperature').html(temperature.toFixed(1) + '&#8451;');
+
+                if (room === 'spare_bedroom' || room === 'study')
                 {
-                    ajax_calls();
-                }, 1000*10);
-            });
-
-            // Get temperature from rooms, format it and set background colour for rooms
-            function set_temperature(data)
-            {
-                var total_temp = 0;
-                var total_weekly_temp = 0;
-                var number_of_rooms = 0;
-
-                Object.keys(data).forEach(function(room)
+                    // Set the colour of the room and room hall
+                    $('div.' + room).css('background-color', generate_room_colour(temperature, is_old));
+                }
+                else
                 {
-                    var temp = parseFloat(data[room]['temperature']);
-                    var avg_temp = parseFloat(data[room]['average_temperature']);
-                    var is_old = is_date_old(data[room]['date']);
+                    // Set the colour of the room
+                    $('div#' + room).css('background-color', generate_room_colour(temperature, is_old));
+                }
 
-                    total_temp += temp;
-                    total_weekly_temp += avg_temp;
-                    number_of_rooms++;
+                // Set emoji
+                set_image('div#' + room + ' img#' + room + '_emoji', get_image($('div#' + room).css('background-color'), is_old));
 
-                    // Set temperature rounded to 1 decimal place and with '*C' after it
-                    $('div#' + room + ' p.temperature').html(temp.toFixed(1) + '&#8451;');
+                // Set the average house temperature
+                set_current_average();
 
-                    if (room === 'spare_bedroom' || room === 'study')
-                    {
-                        // Set the colour of the room and room hall
-                        $('div.' + room).css('background-color', generate_room_colour(temp, is_old));
-                    }
-                    else
-                    {
-                        // Set the colour of the room
-                        $('div#' + room).css('background-color', generate_room_colour(temp, is_old));
-                    }
-
-                    // Set emoji
-                    set_image('div#' + room + ' img#' + room + '_emoji', get_image($('div#' + room).css('background-color'), is_old));
-                });
-
-                $('p#average_house_temp').html((total_temp / number_of_rooms).toFixed(1) + '&#8451;');
-                $('p#weekly_average_house_temp').html((total_weekly_temp / number_of_rooms).toFixed(1) + '&#8451;');
             }
 
             // Set wether the lights are on or off
@@ -173,33 +239,6 @@
                         $('img#' + light + '_emoji').hide();
                     }
                 });
-            }
-
-            // Get temperature data from the database
-            function ajax_calls()
-            {
-                var php_files = ['php/get_temperature.php', 'php/tradfri_status.php'];
-
-                for (var i = 0; i < php_files.length; i++)
-                {
-                    $.ajax({
-                        type: 'POST',
-                        url: php_files[i],
-                        success: function(result)
-                        {
-                            var json = JSON.parse(result);
-
-                            if (this.url === 'php/tradfri_status.php')
-                            {
-                                set_lights(json);
-                            }
-                            else
-                            {
-                                set_temperature(json);
-                            }
-                        }
-                    });
-                }
             }
         </script>
     </head>
