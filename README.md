@@ -12,5 +12,5 @@ To do list
 - [ ] Use media queries
 - [ ] Show Monzo data
 - [ ] Show weather data
-- [ ] Look into Firebase
+- [x] Look into Firebase
 - [ ] (Stretch Goal) Record and display outside temperature
