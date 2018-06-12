@@ -165,6 +165,31 @@
                 {
                     set_average_temperature('study', snapshot.val());
                 });
+
+                var kitchen_light_ref = database.ref('kitchen/kitchen_light');
+                kitchen_light_ref.on('value', function(snapshot)
+                {
+                    set_light('kitchen_light', snapshot.val());
+                });
+
+                var living_room_light_ref = database.ref('kitchen/living_room_light');
+                living_room_light_ref.on('value', function(snapshot)
+                {
+                    set_light('living_room_light', snapshot.val());
+                });
+
+                var bedroom_light_ref = database.ref('bedroom/bedroom_light');
+                bedroom_light_ref.on('value', function(snapshot)
+                {
+                    set_light('bedroom_light', snapshot.val());
+                });
+
+                var bedroom_lamp_ref = database.ref('bedroom/bedroom_lamp');
+                bedroom_lamp_ref.on('value', function(snapshot)
+                {
+                    set_light('bedroom_lamp', snapshot.val());
+                });
+
             }
         </script>
 
@@ -201,44 +226,42 @@
 
             }
 
-            // Set wether the lights are on or off
-            function set_lights(light_status)
+            // Set wether the light is on or off
+            function set_light(light, data)
             {
-                // Loop through json returned from tradfri
-                Object.keys(light_status).forEach(function(light)
+                // Check if the light is on
+                if (data['is_on'] == 'true')
                 {
-                    // Check if the light is on
-                    if (light_status[light][3311][0][5850])
+                    if (light === 'living_room_light')
                     {
-                        if (light === 'living_room_light')
-                        {
-                            // Get colours of the living room light
-                            var hue = light_status[light][3311][0][5707] / 65535;
-                            var saturation = light_status[light][3311][0][5708] / 65535;
-                            var rgb = hsv_to_rgb(hue, saturation, 1);
+                        // Get colours of the living room light
+                        var hue = data['hue'] / 65535;
+                        var saturation = data['saturation'] / 65535;
+                        var rgb = hsv_to_rgb(hue, saturation, 1);
+                        console.log(1);
 
-                            // If the colour has changed since last check draw the new image
-                            if (!are_arrays_equal(rgb, living_room_light_rgb))
-                            {
-                                set_bulb_colour('img#' + light + '_emoji', rgb);
-                                living_room_light_rgb = rgb;
-                            }
-                        }
-                        else
+                        // If the colour has changed since last check draw the new image
+                        if (!are_arrays_equal(rgb, living_room_light_rgb))
                         {
-                            // Set image src as the light bulb image
-                            $('img#' + light + '_emoji').attr('src', 'images/light_bulb.png');
+                        console.log(2);
+                            set_bulb_colour('img#' + light + '_emoji', rgb);
+                            living_room_light_rgb = rgb;
                         }
-
-                        // Show image
-                        $('img#' + light + '_emoji').show();
                     }
                     else
                     {
-                        // Hide image if the light is off
-                        $('img#' + light + '_emoji').hide();
+                        // Set image src as the light bulb image
+                        $('img#' + light + '_emoji').attr('src', 'images/light_bulb.png');
                     }
-                });
+
+                    // Show image
+                    $('img#' + light + '_emoji').show();
+                }
+                else
+                {
+                    // Hide image if the light is off
+                    $('img#' + light + '_emoji').hide();
+                }
             }
         </script>
     </head>
