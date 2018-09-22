@@ -21,26 +21,28 @@ var living_room_light_rgb = [0, 0, 0];
 // Sets the room temperature, called when database updates
 function set_temperature(room, data)
 {
-    var is_old = is_date_old(data['date_time']);
-    var temperature = parseFloat(data['temperature']);
+    const svgDoc = document.getElementById('floorPlan').getSVGDocument();
+    const is_old = is_date_old(data['date_time']);
+    const temperature = parseFloat(data['temperature']);
     current_room_temperatures[room] = temperature;
 
-    // Set temperature rounded to 1 decimal place and with '*C' after it
-    $('div#' + room + ' p.temperature').html(temperature.toFixed(1) + '&#8451;');
+    svgDoc.getElementById(`${room}Temperature`).textContent = `${temperature.toFixed(1)}℃`
 
+    const colour = generate_room_colour(temperature, is_old)
     if (room === 'spare_bedroom' || room === 'study')
     {
         // Set the colour of the room and room hall
-        $('div.' + room).css('background-color', generate_room_colour(temperature, is_old));
+        svgDoc.getElementById(`svg_spare_bedroom`).style.fill = colour
+        svgDoc.getElementById(`svg_study`).style.fill = colour
     }
     else
     {
         // Set the colour of the room
-        $('div#' + room).css('background-color', generate_room_colour(temperature, is_old));
+        svgDoc.getElementById(`svg_${room}`).style.fill = colour
     }
 
     // Set emoji
-    set_image('div#' + room + ' img#' + room + '_emoji', get_image($('div#' + room).css('background-color'), is_old));
+    svgDoc.getElementById(`${room}Icon`).textContent = get_image(colour, is_old)
 
     // Set the average house temperature
     set_current_average();
@@ -50,72 +52,52 @@ function set_temperature(room, data)
 // Set wether the light is on or off
 function set_light(light, data)
 {
+    const current_light = document.getElementById('floorPlan').getSVGDocument().getElementById(light);
     // Check if the light is on
     if (data['is_on'] == 'true')
     {
         if (light === 'living_room_light')
         {
-            // Get colours of the living room light
-            var hue = data['hue'] / 65535;
-            var saturation = data['saturation'] / 65535;
-            var rgb = hsv_to_rgb(hue, saturation, 1);
-            console.log(1);
-
-            // If the colour has changed since last check draw the new image
-            if (!are_arrays_equal(rgb, living_room_light_rgb))
-            {
-            console.log(2);
-                set_bulb_colour('img#' + light + '_emoji', rgb);
-                living_room_light_rgb = rgb;
-            }
+            current_light.style.fill=`hsl(${data['hue'] / 65535}, ${data['saturation'] / 65535}, 1)`
         }
-        else
-        {
-            // Set image src as the light bulb image
-            $('img#' + light + '_emoji').attr('src', 'images/light_bulb.png');
-        }
-
-        // Show image
-        $('img#' + light + '_emoji').show();
+        current_light.style.visibility = ''
     }
     else
     {
         // Hide image if the light is off
-        $('img#' + light + '_emoji').hide();
+        current_light.style.visibility = 'hidden'
     }
 }
 
 // Sets the current average house temperature
 function set_current_average()
 {
-    var total_temp = 0;
+    let total_temp = 0;
 
-    Object.keys(current_room_temperatures).forEach(function(room)
-    {
+    Object.keys(current_room_temperatures).forEach((room) => {
         total_temp += current_room_temperatures[room];
     });
 
-    $('p#average_house_temp').html((total_temp / number_of_rooms).toFixed(1) + '&#8451;');
+    document.getElementById('average_house_temp').innerHTML = (total_temp / number_of_rooms).toFixed(1) + '℃'
 }
 
 // Sets the weekly average house temperature
 function set_weekly_averages()
 {
-    var total_temp = 0;
+    let total_temp = 0;
 
-    Object.keys(weekly_average_room_temperatures).forEach(function(room)
-    {
+    Object.keys(weekly_average_room_temperatures).forEach((room) => {
         total_temp += weekly_average_room_temperatures[room];
     });
+    document.getElementById('weekly_average_house_temp').innerHTML = (total_temp / number_of_rooms).toFixed(1) + '℃'
 
-    $('p#weekly_average_house_temp').html((total_temp / number_of_rooms).toFixed(1) + '&#8451;');
 }
 
 // Return the hex colour of the room given the temperature
 function generate_room_colour(temperature, is_date_old)
 {
-    var upper_limit = 22;
-    var lower_limit = 19.5;
+    const upper_limit = 22;
+    const lower_limit = 19.5;
 
     if (is_date_old)
     {
@@ -136,21 +118,21 @@ function generate_room_colour(temperature, is_date_old)
     }
 }
 
-// Return the image to be displayed depening on background colour
-function get_image(color, is_date_old)
+// Return the image to be displayed depending on background colour
+function get_image(colour, is_date_old)
 {
     if (is_date_old)
     {
-        return 'images/sad_emoji.png';
+        return '😭';
     }
 
-    if (color == 'rgb(255, 68, 68)')
+    if (colour == '#FF4444')
     {
-        return 'images/fire.png';
+        return '🔥';
     }
-    else if (color == 'rgb(109, 194, 255)')
+    else if (colour == '#6DC2FF')
     {
-        return 'images/snowflake.png';
+        return '❄️';
     }
     else
     {
@@ -158,126 +140,18 @@ function get_image(color, is_date_old)
     }
 }
 
-// Set image fore the room
-function set_image(img_id, image)
-{
-    if (image != '')
-    {
-        $(img_id).attr('src', image);
-        $(img_id).show();
-    }
-    else
-    {
-        $(img_id).hide();
-    }
-}
-
 // Check if date is recent
 function is_date_old(date)
 {
-    var now = new Date();
-    var one_and_half_mins = 1.5 * 60 * 1000;
-    var d = date.split(/[- :]/);
+    const now = new Date();
+    const one_and_half_mins = 1.5 * 60 * 1000;
+    const d = date.split(/[- :]/);
 
-    var date_to_check = new Date(d[0], d[1] - 1, d[2], d[4], d[5], d[6]);
+    const date_to_check = new Date(d[0], d[1] - 1, d[2], d[4], d[5], d[6]);
 
-    if ((now - date_to_check) > one_and_half_mins)
-    {
-        return true;
-    }
-
-    return false;
+    return ((now - date_to_check) > one_and_half_mins);
 }
 
-// Set colour of light bulb
-function set_bulb_colour(img_id, rgb_colour)
-{
-    // Load the light bulb image in and redraw it with the new colour
-    var img = new Image();
-
-    img.onload = function()
-    {
-        var canvas = document.createElement('canvas');
-
-        canvas.width = img.width;
-        canvas.height = img.height;
-
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-
-        var image_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-        for (var i = 0; i < image_data.data.length; i += 4)
-        {
-            // If the pixel is yellow set it to the new colour
-            if (image_data.data[i + 3] != 0 && (image_data.data[i] > 200 && image_data.data[i + 2] < 100))
-            {
-                image_data.data[i] = rgb_colour[0];
-                image_data.data[i + 1] = rgb_colour[1];
-                image_data.data[i + 2] = rgb_colour[2];
-            }
-        }
-
-        ctx.putImageData(image_data, 0, 0);
-
-        // Set the image src to the bulb with the new colour
-        $(img_id).attr('src', canvas.toDataURL());
-        canvas = null;
-    }
-
-    img.src = 'images/light_bulb.png';
+function listen_for_new_week() {
+    console.log("IMPLEMENT ME AARON, WHY DO YOU HATE ME AARON?")
 }
-
-/**
-* Converts an HSV color value to RGB. Conversion formula
-* adapted from http://en.wikipedia.org/wiki/HSV_color_space.
-* Assumes h, s, and v are contained in the set [0, 1] and
-* returns r, g, and b in the set [0, 255].
-*
-* @param   Number  h       The hue
-* @param   Number  s       The saturation
-* @param   Number  v       The value
-* @return  Array           The RGB representation
-*/
-function hsv_to_rgb(h, s, v)
-{
-    var r, g, b;
-
-    var i = Math.floor(h * 6);
-    var f = h * 6 - i;
-    var p = v * (1 - s);
-    var q = v * (1 - f * s);
-    var t = v * (1 - (1 - f) * s);
-
-    switch (i % 6)
-    {
-        case 0: r = v, g = t, b = p; break;
-        case 1: r = q, g = v, b = p; break;
-        case 2: r = p, g = v, b = t; break;
-        case 3: r = p, g = q, b = v; break;
-        case 4: r = t, g = p, b = v; break;
-        case 5: r = v, g = p, b = q; break;
-    }
-
-    return [ Math.round(r * 255), Math.round(g * 255), Math.round(b * 255) ];
-}
-
-// Return true if the arrys are the same else return false
-function are_arrays_equal(array_one, array_two)
-{
-    if (array_one.length != array_two.length)
-    {
-        return false;
-    }
-
-    for (var i = 0; i < array_one.length; i++)
-    {
-        if (array_one[i] != array_two[i])
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-

@@ -8,10 +8,9 @@ var config = {
     messagingSenderId: "847481592400"
 };
 
-$(document).ready(function()
-{
+document.addEventListener('DOMContentLoaded', function(){ 
     listeners();
-});
+}, false);
 
 firebase.initializeApp(config);
 
@@ -64,76 +63,64 @@ function set_average_temperature(room, data)
 // Activate listeners to listen to firebase
 function listeners()
 {
-    var current_bedroom_ref = database.ref('bedroom/current');
-    current_bedroom_ref.on('value', function(snapshot)
+    database.ref('bedroom/current').on('value', function(snapshot)
     {
         set_temperature('bedroom', snapshot.val());
     });
 
-    var current_kitchen_ref = database.ref('kitchen/current');
-    current_kitchen_ref.on('value', function(snapshot)
+    database.ref('kitchen/current').on('value', function(snapshot)
     {
         set_temperature('kitchen', snapshot.val());
     });
 
-    var current_spare_bedroom_ref = database.ref('spare_bedroom/current');
-    current_spare_bedroom_ref.on('value', function(snapshot)
+    database.ref('spare_bedroom/current').on('value', function(snapshot)
     {
         set_temperature('spare_bedroom', snapshot.val());
     });
 
-    var current_study_ref = database.ref('study/current');
-    current_study_ref.on('value', function(snapshot)
+    database.ref('study/current').on('value', function(snapshot)
     {
         set_temperature('study', snapshot.val());
     });
 
-    var weeks_bedroom_ref = database.ref('bedroom/weeks');
-    weeks_bedroom_ref.orderByKey().limitToLast(1).once('value').then(function(snapshot)
+    database.ref('bedroom/weeks').orderByKey().limitToLast(1).once('value').then(function(snapshot)
     {
         set_average_temperature('bedroom', snapshot.val());
     });
 
-    var weeks_kitchen_ref = database.ref('kitchen/weeks');
-    weeks_kitchen_ref.orderByKey().limitToLast(1).once('value').then(function(snapshot)
+    database.ref('kitchen/weeks').orderByKey().limitToLast(1).once('value').then(function(snapshot)
     {
         set_average_temperature('kitchen', snapshot.val());
     });
 
-    var weeks_spare_bedroom_ref = database.ref('spare_bedroom/weeks');
-    weeks_spare_bedroom_ref.orderByKey().limitToLast(1).once('value').then(function(snapshot)
+    database.ref('spare_bedroom/weeks').orderByKey().limitToLast(1).once('value').then(function(snapshot)
     {
         set_average_temperature('spare_bedroom', snapshot.val());
     });
 
-    var weeks_study_ref = database.ref('study/weeks');
-    weeks_study_ref.orderByKey().limitToLast(1).once('value').then(function(snapshot)
+    database.ref('study/weeks').orderByKey().limitToLast(1).once('value').then(function(snapshot)
     {
         set_average_temperature('study', snapshot.val());
     });
 
-    var kitchen_light_ref = database.ref('kitchen/kitchen_light');
-    kitchen_light_ref.on('value', function(snapshot)
+    database.ref('kitchen/kitchen_light').on('value', function(snapshot)
     {
-        set_light('kitchen_light', snapshot.val());
+        set_light('kitchenLightbulb', snapshot.val());
     });
 
-    var living_room_light_ref = database.ref('kitchen/living_room_light');
-    living_room_light_ref.on('value', function(snapshot)
+    database.ref('kitchen/living_room_light').on('value', function(snapshot)
     {
-        set_light('living_room_light', snapshot.val());
+        set_light('living_roomLightbulb', snapshot.val());
     });
 
-    var bedroom_light_ref = database.ref('bedroom/bedroom_light');
-    bedroom_light_ref.on('value', function(snapshot)
+    database.ref('bedroom/bedroom_light').on('value', function(snapshot)
     {
-        set_light('bedroom_light', snapshot.val());
+        set_light('bedroomLightbulb', snapshot.val());
     });
 
-    var bedroom_lamp_ref = database.ref('bedroom/bedroom_lamp');
-    bedroom_lamp_ref.on('value', function(snapshot)
+    database.ref('bedroom/bedroom_lamp').on('value', function(snapshot)
     {
-        set_light('bedroom_lamp', snapshot.val());
+        set_light('bedroom_lampLightbulb', snapshot.val());
     });
 }
 
