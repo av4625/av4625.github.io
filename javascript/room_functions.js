@@ -2,7 +2,6 @@
 // Green: #57ED69
 // Blue: #0083FF
 
-var number_of_rooms = 4;
 var current_room_temperatures = {
     'kitchen':       0,
     'bedroom':       0,
@@ -21,8 +20,8 @@ var living_room_light_rgb = [0, 0, 0];
 // Sets the room temperature, called when database updates
 function set_temperature(room, data)
 {
-    var is_old = is_date_old(data['date_time']);
-    var temperature = parseFloat(data['temperature']);
+    var is_old = is_date_old(data.date_time);
+    var temperature = parseFloat(data.temperature);
     current_room_temperatures[room] = temperature;
 
     // Set temperature rounded to 1 decimal place and with '*C' after it
@@ -51,20 +50,18 @@ function set_temperature(room, data)
 function set_light(light, data)
 {
     // Check if the light is on
-    if (data['is_on'] == 'true')
+    if (data.is_on == 'true')
     {
         if (light === 'living_room_light')
         {
             // Get colours of the living room light
-            var hue = data['hue'] / 65535;
-            var saturation = data['saturation'] / 65535;
+            var hue = data.hue / 65535;
+            var saturation = data.saturation / 65535;
             var rgb = hsv_to_rgb(hue, saturation, 1);
-            console.log(1);
 
             // If the colour has changed since last check draw the new image
             if (!are_arrays_equal(rgb, living_room_light_rgb))
             {
-            console.log(2);
                 set_bulb_colour('img#' + light + '_emoji', rgb);
                 living_room_light_rgb = rgb;
             }
@@ -95,7 +92,7 @@ function set_current_average()
         total_temp += current_room_temperatures[room];
     });
 
-    $('p#average_house_temp').html((total_temp / number_of_rooms).toFixed(1) + '&#8451;');
+    $('p#average_house_temp').html((total_temp / Object.keys(current_room_temperatures).length).toFixed(1) + '&#8451;');
 }
 
 // Sets the weekly average house temperature
@@ -108,7 +105,7 @@ function set_weekly_averages()
         total_temp += weekly_average_room_temperatures[room];
     });
 
-    $('p#weekly_average_house_temp').html((total_temp / number_of_rooms).toFixed(1) + '&#8451;');
+    $('p#weekly_average_house_temp').html((total_temp / Object.keys(weekly_average_room_temperatures).length).toFixed(1) + '&#8451;');
 }
 
 // Return the hex colour of the room given the temperature
@@ -161,7 +158,7 @@ function get_image(color, is_date_old)
 // Set image fore the room
 function set_image(img_id, image)
 {
-    if (image != '')
+    if (image !== '')
     {
         $(img_id).attr('src', image);
         $(img_id).show();
@@ -210,7 +207,7 @@ function set_bulb_colour(img_id, rgb_colour)
         for (var i = 0; i < image_data.data.length; i += 4)
         {
             // If the pixel is yellow set it to the new colour
-            if (image_data.data[i + 3] != 0 && (image_data.data[i] > 200 && image_data.data[i + 2] < 100))
+            if (image_data.data[i + 3] !== 0 && (image_data.data[i] > 200 && image_data.data[i + 2] < 100))
             {
                 image_data.data[i] = rgb_colour[0];
                 image_data.data[i + 1] = rgb_colour[1];
@@ -223,7 +220,7 @@ function set_bulb_colour(img_id, rgb_colour)
         // Set the image src to the bulb with the new colour
         $(img_id).attr('src', canvas.toDataURL());
         canvas = null;
-    }
+    };
 
     img.src = 'images/light_bulb.png';
 }
