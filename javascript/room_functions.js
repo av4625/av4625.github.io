@@ -2,7 +2,6 @@
 // Green: #57ED69
 // Blue: #0083FF
 
-var number_of_rooms = 4;
 var current_room_temperatures = {
     'kitchen':       0,
     'bedroom':       0,
@@ -22,8 +21,8 @@ var living_room_light_rgb = [0, 0, 0];
 function set_temperature(room, data)
 {
     const svgDoc = document.getElementById('floorPlan').getSVGDocument();
-    const is_old = is_date_old(data['date_time']);
-    const temperature = parseFloat(data['temperature']);
+    const is_old = is_date_old(data.date_time);
+    const temperature = parseFloat(data.temperature);
     current_room_temperatures[room] = temperature;
 
     svgDoc.getElementById(`${room}Temperature`).textContent = `${temperature.toFixed(1)}℃`
@@ -54,18 +53,18 @@ function set_light(light, data)
 {
     const current_light = document.getElementById('floorPlan').getSVGDocument().getElementById(light);
     // Check if the light is on
-    if (data['is_on'] == 'true')
+    if (data.is_on == 'true')
     {
         if (light === 'living_room_light')
         {
-            current_light.style.fill=`hsl(${data['hue'] / 65535}, ${data['saturation'] / 65535}, 1)`
+            current_light.style.fill=`hsl(${data.hue / 65535}, ${data.saturation / 65535}, 1)`;
         }
-        current_light.style.visibility = ''
+        current_light.style.visibility = '';
     }
     else
     {
         // Hide image if the light is off
-        current_light.style.visibility = 'hidden'
+        current_light.style.visibility = 'hidden';
     }
 }
 
@@ -78,7 +77,7 @@ function set_current_average()
         total_temp += current_room_temperatures[room];
     });
 
-    document.getElementById('average_house_temp').innerHTML = (total_temp / number_of_rooms).toFixed(1) + '℃'
+    document.getElementById('average_house_temp').innerHTML = (total_temp / Object.keys(current_room_temperatures).length).toFixed(1) + '℃';
 }
 
 // Sets the weekly average house temperature
@@ -89,8 +88,7 @@ function set_weekly_averages()
     Object.keys(weekly_average_room_temperatures).forEach((room) => {
         total_temp += weekly_average_room_temperatures[room];
     });
-    document.getElementById('weekly_average_house_temp').innerHTML = (total_temp / number_of_rooms).toFixed(1) + '℃'
-
+    document.getElementById('weekly_average_house_temp').innerHTML = (total_temp / Object.keys(weekly_average_room_temperatures).length).toFixed(1) + '℃';
 }
 
 // Return the hex colour of the room given the temperature
