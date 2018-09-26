@@ -17,12 +17,7 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-function get_week_number(key)
-{
-    return parseInt(key.substring(5, key.length));
-}
-
-// Get average temperature for the week from the different days
+// Get the average temperature from the different days
 function get_average_temperature(days_data)
 {
     const keys = Object.keys(days_data);
@@ -41,10 +36,9 @@ function get_average_temperature(days_data)
     return total_temp / total_entries;
 }
 
-// Set the average temperature
+// Set the average temperature for a room
 function set_average_temperature(room, data)
 {
-    // Set week one data
     weekly_average_room_temperatures[room] = get_average_temperature(data);
     set_weekly_averages();
 }
@@ -83,80 +77,80 @@ function listeners()
     // Bedroom average temperature from previous week listener
     // Returns the current week if its the only week
     var weeks_bedroom_ref = database.ref('bedroom/weeks');
-    weeks_bedroom_ref.endAt().on('child_added', function(snap, prev_child_key)
+    weeks_bedroom_ref.limitToLast(1).on('child_added', function(s)
     {
-        if (prev_child_key === null)
+        weeks_bedroom_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
-            set_average_temperature('bedroom', snap.val());
-        }
-        else
-        {
-            const previous_child_ref = database.ref('bedroom/weeks/' + prev_child_key);
-            previous_child_ref.once('value').then(function(snapshot)
+            var is_first = true;
+            snapshot.forEach(function(child)
             {
-                set_average_temperature('bedroom', snapshot.val());
+                if (is_first)
+                {
+                    set_average_temperature('bedroom', child.val());
+                    is_first = false;
+                }
             });
-        }
+        });
     });
 
     // Kitchen average temperature from previous week listener
     // Returns the current week if its the only week
     var weeks_kitchen_ref = database.ref('kitchen/weeks');
-    weeks_kitchen_ref.endAt().on('child_added', function(snap, prev_child_key)
+    weeks_kitchen_ref.limitToLast(1).on('child_added', function(s)
     {
-        if (prev_child_key === null)
+        weeks_kitchen_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
-            set_average_temperature('kitchen', snap.val());
-        }
-        else
-        {
-            const previous_child_ref = database.ref('kitchen/weeks/' + prev_child_key);
-            previous_child_ref.once('value').then(function(snapshot)
+            var is_first = true;
+            snapshot.forEach(function(child)
             {
-                set_average_temperature('kitchen', snapshot.val());
+                if (is_first)
+                {
+                    set_average_temperature('kitchen', child.val());
+                    is_first = false;
+                }
             });
-        }
+        });
     });
 
     // Spare bedroom average temperature from previous week listener
     // Returns the current week if its the only week
     var weeks_spare_bedroom_ref = database.ref('spare_bedroom/weeks');
-    weeks_spare_bedroom_ref.endAt().on('child_added', function(snap, prev_child_key)
+    weeks_spare_bedroom_ref.limitToLast(1).on('child_added', function(s)
     {
-        if (prev_child_key === null)
+        weeks_spare_bedroom_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
-            set_average_temperature('spare_bedroom', snap.val());
-        }
-        else
-        {
-            const previous_child_ref = database.ref('spare_bedroom/weeks/' + prev_child_key);
-            previous_child_ref.once('value').then(function(snapshot)
+            var is_first = true;
+            snapshot.forEach(function(child)
             {
-                set_average_temperature('spare_bedroom', snapshot.val());
+                if (is_first)
+                {
+                    set_average_temperature('spare_bedroom', child.val());
+                    is_first = false;
+                }
             });
-        }
+        });
     });
 
     // Study average temperature from previous week listener
     // Returns the current week if its the only week
     var weeks_study_ref = database.ref('study/weeks');
-    weeks_study_ref.endAt().on('child_added', function(snap, prev_child_key)
+    weeks_study_ref.limitToLast(1).on('child_added', function(s)
     {
-        if (prev_child_key === null)
+        weeks_study_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
-            set_average_temperature('study', snap.val());
-        }
-        else
-        {
-            const previous_child_ref = database.ref('study/weeks/' + prev_child_key);
-            previous_child_ref.once('value').then(function(snapshot)
+            var is_first = true;
+            snapshot.forEach(function(child)
             {
-                set_average_temperature('study', snapshot.val());
+                if (is_first)
+                {
+                    set_average_temperature('study', child.val());
+                    is_first = false;
+                }
             });
-        }
+        });
     });
 
-    // Kitchen light listener
+    // Kicthen light listener
     var kitchen_light_ref = database.ref('kitchen/kitchen_light');
     kitchen_light_ref.on('value', function(snapshot)
     {
@@ -177,7 +171,7 @@ function listeners()
         set_light('bedroom_light', snapshot.val());
     });
 
-    // Bedroom lamp listener
+    // Bedoom lamp listener
     var bedroom_lamp_ref = database.ref('bedroom/bedroom_lamp');
     bedroom_lamp_ref.on('value', function(snapshot)
     {
