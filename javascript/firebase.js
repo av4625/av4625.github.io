@@ -16,11 +16,7 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-function get_week_number(key)
-{
-    return parseInt(key.substring(5, key.length));
-}
-
+// Get the average temperature from the different days
 function get_average_temperature(days_data)
 {
     const keys = Object.keys(days_data);
@@ -39,95 +35,135 @@ function get_average_temperature(days_data)
     return total_temp / total_entries;
 }
 
-// Set the average temperature, and listen for a new week
+// Set the average temperature for a room
 function set_average_temperature(room, data)
 {
-    // Make sure the keys are in the correct order
-    const ordered = {};
-    Object.keys(data).sort().forEach(function(key)
-    {
-        ordered[key] = data[key];
-    });
-
-    // Set week one data
-    weekly_average_room_temperatures[room] = get_average_temperature(ordered[Object.keys(ordered)[0]]);
+    weekly_average_room_temperatures[room] = get_average_temperature(data);
     set_weekly_averages();
 }
 
 // Activate listeners to listen to firebase
 function listeners()
 {
+    // Current bedroom temperature listener
     database.ref('bedroom/current').on('value', function(snapshot)
     {
         set_temperature('bedroom', snapshot.val());
     });
 
+    // Current kitchen temperature listener
     database.ref('kitchen/current').on('value', function(snapshot)
     {
         set_temperature('kitchen', snapshot.val());
     });
 
+    // Current spare bedroom temperature listener
     database.ref('spare_bedroom/current').on('value', function(snapshot)
     {
         set_temperature('spare_bedroom', snapshot.val());
     });
 
+    // Current study temperature listener
     database.ref('study/current').on('value', function(snapshot)
     {
         set_temperature('study', snapshot.val());
     });
 
+    // Bedroom average temperature from previous week listener
+    // Returns the current week if its the only week
     const weeks_bedroom_ref = database.ref('bedroom/weeks');
     weeks_bedroom_ref.limitToLast(1).on('child_added', function(s)
     {
         weeks_bedroom_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
-            set_average_temperature('bedroom', snapshot.val());
+            var is_first = true;
+            snapshot.forEach(function(child)
+            {
+                if (is_first)
+                {
+                    set_average_temperature('bedroom', child.val());
+                    is_first = false;
+                }
+            });
         });
     });
 
+    // Kitchen average temperature from previous week listener
+    // Returns the current week if its the only week
     const weeks_kitchen_ref = database.ref('kitchen/weeks');
     weeks_kitchen_ref.limitToLast(1).on('child_added', function(s)
     {
         weeks_kitchen_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
-            set_average_temperature('kitchen', snapshot.val());
+            var is_first = true;
+            snapshot.forEach(function(child)
+            {
+                if (is_first)
+                {
+                    set_average_temperature('kitchen', child.val());
+                    is_first = false;
+                }
+            });
         });
     });
 
+    // Spare bedroom average temperature from previous week listener
+    // Returns the current week if its the only week
     const weeks_spare_bedroom_ref = database.ref('spare_bedroom/weeks');
     weeks_spare_bedroom_ref.limitToLast(1).on('child_added', function(s)
     {
         weeks_spare_bedroom_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
-            set_average_temperature('spare_bedroom', snapshot.val());
+            var is_first = true;
+            snapshot.forEach(function(child)
+            {
+                if (is_first)
+                {
+                    set_average_temperature('spare_bedroom', child.val());
+                    is_first = false;
+                }
+            });
         });
     });
 
+    // Study average temperature from previous week listener
+    // Returns the current week if its the only week
     const weeks_study_ref = database.ref('study/weeks');
     weeks_study_ref.limitToLast(1).on('child_added', function(s)
     {
         weeks_study_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
-            set_average_temperature('study', snapshot.val());
+            var is_first = true;
+            snapshot.forEach(function(child)
+            {
+                if (is_first)
+                {
+                    set_average_temperature('study', child.val());
+                    is_first = false;
+                }
+            });
         });
     });
 
+    // Kicthen light listener
     database.ref('kitchen/kitchen_light').on('value', function(snapshot)
     {
         set_light('kitchenLightbulb', snapshot.val());
     });
 
+    // Living room light listener
     database.ref('kitchen/living_room_light').on('value', function(snapshot)
     {
         set_light('living_roomLightbulb', snapshot.val());
     });
 
+    // Bedroom light listener
     database.ref('bedroom/bedroom_light').on('value', function(snapshot)
     {
         set_light('bedroomLightbulb', snapshot.val());
     });
 
+    // Bedoom lamp listener
     database.ref('bedroom/bedroom_lamp').on('value', function(snapshot)
     {
         set_light('bedroom_lampLightbulb', snapshot.val());
