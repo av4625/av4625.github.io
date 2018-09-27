@@ -1,17 +1,14 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
     <head>
-        <title>My Home</title>
-
+        <title>My home</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-
-        <link rel="stylesheet" href="css/floor_plan.css?ver=<?php echo time();?>" type="text/css"/>
-
+        <link rel="stylesheet" href="css/floor_plan.css" type="text/css"/>
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
-        <script src="javascript/jquery-3.2.1.min.js" type="text/javascript"></script>
-        <script src="javascript/firebase.js?ver=<?php echo time();?>" type="text/javascript"></script>
-        <script src="javascript/room_functions.js?ver=<?php echo time();?>" type="text/javascript"></script>
+
+        <script src="javascript/firebase.js" type="text/javascript"></script>
+        <script src="javascript/room_functions.js" type="text/javascript"></script>
     </head>
     <body>
         <div id="information">
@@ -21,48 +18,8 @@
             <h4 id="week_average_house_temp_header" class="info_headers">Weekly Average House Temperature</h4>
             <p id="weekly_average_house_temp" class="info_p"></p>
         </div>
-        <div id="outside_edge">
-            <div id="bathroom" class="room">
-                <p class="room_name">Bathroom</p>
-            </div>
-
-            <div id="kitchen" class="room">
-                <p class="room_name">Kitchen</p>
-                <p class="temperature"></p>
-                <img id="kitchen_emoji" class="room_emoji" src=""/>
-                <img id="kitchen_light_emoji" class="light_emoji" src=""/>
-                <img id="living_room_light_emoji" class="light_emoji" src=""/>
-            </div>
-
-            <div id="hall" class="room">
-                <p class="room_name">Hall</p>
-            </div>
-
-            <div id="bedroom" class="room">
-                <p class="room_name">Bedroom</p>
-                <p class="temperature"></p>
-                <img id="bedroom_emoji" class="room_emoji" src=""/>
-                <img id="bedroom_light_emoji" class="light_emoji" src=""/>
-                <img id="bedroom_lamp_emoji" class="light_emoji" src=""/>
-            </div>
-
-            <div id="closet" class="room">
-                <p class="room_name">Closet</p>
-            </div>
-
-            <div id="study" class="room study">
-                <p class="room_name">Study</p>
-                <p class="temperature"></p>
-                <img id="study_emoji" class="room_emoji" src=""/>
-            </div>
-            <div id="study_hall" class="room study"></div>
-
-            <div id="spare_bedroom" class="room spare_bedroom">
-                <p class="room_name">Spare Bedroom</p>
-                <p class="temperature"></p>
-                <img id="spare_bedroom_emoji" class="room_emoji" src=""/>
-            </div>
-            <div id="spare_bedroom_hall" class="room spare_bedroom"></div>
+        <div id="floorPlanContainer">
+            <object id="floorPlan" data="./floorplan.svg" type="image/svg+xml"></object>
         </div>
     </body>
 </html>

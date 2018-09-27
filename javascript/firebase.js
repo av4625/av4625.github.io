@@ -8,10 +8,9 @@ var config = {
     messagingSenderId: "847481592400"
 };
 
-$(document).ready(function()
-{
+document.addEventListener('DOMContentLoaded', function(){ 
     listeners();
-});
+}, false);
 
 firebase.initializeApp(config);
 
@@ -47,36 +46,32 @@ function set_average_temperature(room, data)
 function listeners()
 {
     // Current bedroom temperature listener
-    var current_bedroom_ref = database.ref('bedroom/current');
-    current_bedroom_ref.on('value', function(snapshot)
+    database.ref('bedroom/current').on('value', function(snapshot)
     {
         set_temperature('bedroom', snapshot.val());
     });
 
     // Current kitchen temperature listener
-    var current_kitchen_ref = database.ref('kitchen/current');
-    current_kitchen_ref.on('value', function(snapshot)
+    database.ref('kitchen/current').on('value', function(snapshot)
     {
         set_temperature('kitchen', snapshot.val());
     });
 
     // Current spare bedroom temperature listener
-    var current_spare_bedroom_ref = database.ref('spare_bedroom/current');
-    current_spare_bedroom_ref.on('value', function(snapshot)
+    database.ref('spare_bedroom/current').on('value', function(snapshot)
     {
         set_temperature('spare_bedroom', snapshot.val());
     });
 
     // Current study temperature listener
-    var current_study_ref = database.ref('study/current');
-    current_study_ref.on('value', function(snapshot)
+    database.ref('study/current').on('value', function(snapshot)
     {
         set_temperature('study', snapshot.val());
     });
 
     // Bedroom average temperature from previous week listener
     // Returns the current week if its the only week
-    var weeks_bedroom_ref = database.ref('bedroom/weeks');
+    const weeks_bedroom_ref = database.ref('bedroom/weeks');
     weeks_bedroom_ref.limitToLast(1).on('child_added', function(s)
     {
         weeks_bedroom_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
@@ -95,7 +90,7 @@ function listeners()
 
     // Kitchen average temperature from previous week listener
     // Returns the current week if its the only week
-    var weeks_kitchen_ref = database.ref('kitchen/weeks');
+    const weeks_kitchen_ref = database.ref('kitchen/weeks');
     weeks_kitchen_ref.limitToLast(1).on('child_added', function(s)
     {
         weeks_kitchen_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
@@ -114,7 +109,7 @@ function listeners()
 
     // Spare bedroom average temperature from previous week listener
     // Returns the current week if its the only week
-    var weeks_spare_bedroom_ref = database.ref('spare_bedroom/weeks');
+    const weeks_spare_bedroom_ref = database.ref('spare_bedroom/weeks');
     weeks_spare_bedroom_ref.limitToLast(1).on('child_added', function(s)
     {
         weeks_spare_bedroom_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
@@ -133,7 +128,7 @@ function listeners()
 
     // Study average temperature from previous week listener
     // Returns the current week if its the only week
-    var weeks_study_ref = database.ref('study/weeks');
+    const weeks_study_ref = database.ref('study/weeks');
     weeks_study_ref.limitToLast(1).on('child_added', function(s)
     {
         weeks_study_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
@@ -151,31 +146,27 @@ function listeners()
     });
 
     // Kicthen light listener
-    var kitchen_light_ref = database.ref('kitchen/kitchen_light');
-    kitchen_light_ref.on('value', function(snapshot)
+    database.ref('kitchen/kitchen_light').on('value', function(snapshot)
     {
-        set_light('kitchen_light', snapshot.val());
+        set_light('kitchenLightbulb', snapshot.val());
     });
 
     // Living room light listener
-    var living_room_light_ref = database.ref('kitchen/living_room_light');
-    living_room_light_ref.on('value', function(snapshot)
+    database.ref('kitchen/living_room_light').on('value', function(snapshot)
     {
-        set_light('living_room_light', snapshot.val());
+        set_light('living_roomLightbulb', snapshot.val());
     });
 
     // Bedroom light listener
-    var bedroom_light_ref = database.ref('bedroom/bedroom_light');
-    bedroom_light_ref.on('value', function(snapshot)
+    database.ref('bedroom/bedroom_light').on('value', function(snapshot)
     {
-        set_light('bedroom_light', snapshot.val());
+        set_light('bedroomLightbulb', snapshot.val());
     });
 
     // Bedoom lamp listener
-    var bedroom_lamp_ref = database.ref('bedroom/bedroom_lamp');
-    bedroom_lamp_ref.on('value', function(snapshot)
+    database.ref('bedroom/bedroom_lamp').on('value', function(snapshot)
     {
-        set_light('bedroom_lamp', snapshot.val());
+        set_light('bedroom_lampLightbulb', snapshot.val());
     });
 }
 
