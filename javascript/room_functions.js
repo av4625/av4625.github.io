@@ -222,6 +222,8 @@ function set_bulb_colour(img_id, rgb_colour)
         canvas = null;
     };
 
+    // Set the image src, when it loads it will call the function above and
+    // redraw it the correct colour
     img.src = 'images/light_bulb.png';
 }
 

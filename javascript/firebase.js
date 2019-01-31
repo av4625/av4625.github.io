@@ -177,5 +177,12 @@ function listeners()
     {
         set_light('bedroom_lamp', snapshot.val());
     });
+
+    // Spare bedoom light listener
+    var spare_bedroom_light_ref = database.ref('spare_bedroom/spare_bedroom_light');
+    spare_bedroom_light_ref.on('value', function(snapshot)
+    {
+        set_light('spare_bedroom_light', snapshot.val());
+    });
 }
 
