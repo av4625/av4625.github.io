@@ -46,11 +46,11 @@ function set_average_temperature(room, data)
 // Activate listeners to listen to firebase
 function listeners()
 {
-    // Current bedroom temperature listener
-    var current_bedroom_ref = database.ref('bedroom/current');
-    current_bedroom_ref.on('value', function(snapshot)
+    // Current main bedroom temperature listener
+    var current_main_bedroom_ref = database.ref('main_bedroom/current');
+    current_main_bedroom_ref.on('value', function(snapshot)
     {
-        set_temperature('bedroom', snapshot.val());
+        set_temperature('main_bedroom', snapshot.val());
     });
 
     // Current kitchen temperature listener
@@ -67,26 +67,47 @@ function listeners()
         set_temperature('spare_bedroom', snapshot.val());
     });
 
-    // Current study temperature listener
-    var current_study_ref = database.ref('study/current');
-    current_study_ref.on('value', function(snapshot)
+    // Current hot press temperature listener
+    var current_hot_press_ref = database.ref('hot_press/current');
+    current_hot_press_ref.on('value', function(snapshot)
     {
-        set_temperature('study', snapshot.val());
+        set_temperature('hot_press', snapshot.val());
     });
 
-    // Bedroom average temperature from previous week listener
-    // Returns the current week if its the only week
-    var weeks_bedroom_ref = database.ref('bedroom/weeks');
-    weeks_bedroom_ref.limitToLast(1).on('child_added', function(s)
+    // Current dressing room temperature listener
+    var current_dressing_room_ref = database.ref('dressing_room/current');
+    current_dressing_room_ref.on('value', function(snapshot)
     {
-        weeks_bedroom_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
+        set_temperature('dressing_room', snapshot.val());
+    });
+
+    // Current dining room temperature listener
+    var current_dining_room_ref = database.ref('dining_room/current');
+    current_dining_room_ref.on('value', function(snapshot)
+    {
+        set_temperature('dining_room', snapshot.val());
+    });
+
+    // Current living room temperature listener
+    var current_living_room_ref = database.ref('living_room/current');
+    current_living_room_ref.on('value', function(snapshot)
+    {
+        set_temperature('living_room', snapshot.val());
+    });
+
+    // Main bedroom average temperature from previous week listener
+    // Returns the current week if its the only week
+    var weeks_main_bedroom_ref = database.ref('main_bedroom/weeks');
+    weeks_main_bedroom_ref.limitToLast(1).on('child_added', function(s)
+    {
+        weeks_main_bedroom_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
             var is_first = true;
             snapshot.forEach(function(child)
             {
                 if (is_first)
                 {
-                    set_average_temperature('bedroom', child.val());
+                    set_average_temperature('main_bedroom', child.val());
                     is_first = false;
                 }
             });
@@ -131,19 +152,76 @@ function listeners()
         });
     });
 
-    // Study average temperature from previous week listener
+    // Hot press average temperature from previous week listener
     // Returns the current week if its the only week
-    var weeks_study_ref = database.ref('study/weeks');
-    weeks_study_ref.limitToLast(1).on('child_added', function(s)
+    var weeks_hot_press_ref = database.ref('hot_press/weeks');
+    weeks_hot_press_ref.limitToLast(1).on('child_added', function(s)
     {
-        weeks_study_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
+        weeks_hot_press_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
         {
             var is_first = true;
             snapshot.forEach(function(child)
             {
                 if (is_first)
                 {
-                    set_average_temperature('study', child.val());
+                    set_average_temperature('hot_press', child.val());
+                    is_first = false;
+                }
+            });
+        });
+    });
+
+    // Dressing room average temperature from previous week listener
+    // Returns the current week if its the only week
+    var weeks_dressing_room_ref = database.ref('dressing_room/weeks');
+    weeks_dressing_room_ref.limitToLast(1).on('child_added', function(s)
+    {
+        weeks_dressing_room_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
+        {
+            var is_first = true;
+            snapshot.forEach(function(child)
+            {
+                if (is_first)
+                {
+                    set_average_temperature('dressing_room', child.val());
+                    is_first = false;
+                }
+            });
+        });
+    });
+
+    // Dining room average temperature from previous week listener
+    // Returns the current week if its the only week
+    var weeks_dining_room_ref = database.ref('dining_room/weeks');
+    weeks_dining_room_ref.limitToLast(1).on('child_added', function(s)
+    {
+        weeks_dining_room_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
+        {
+            var is_first = true;
+            snapshot.forEach(function(child)
+            {
+                if (is_first)
+                {
+                    set_average_temperature('dining_room', child.val());
+                    is_first = false;
+                }
+            });
+        });
+    });
+
+    // Living room average temperature from previous week listener
+    // Returns the current week if its the only week
+    var weeks_living_room_ref = database.ref('living_room/weeks');
+    weeks_living_room_ref.limitToLast(1).on('child_added', function(s)
+    {
+        weeks_living_room_ref.orderByKey().limitToLast(2).once('value').then(function(snapshot)
+        {
+            var is_first = true;
+            snapshot.forEach(function(child)
+            {
+                if (is_first)
+                {
+                    set_average_temperature('living_room', child.val());
                     is_first = false;
                 }
             });
@@ -185,4 +263,3 @@ function listeners()
         set_light('spare_bedroom_light', snapshot.val());
     });
 }
-

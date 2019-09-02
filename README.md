@@ -10,7 +10,6 @@ To do list
 - [x] Show average house temperature
 - [x] Show weekly average temperature
 - [ ] Use media queries
-- [ ] Show Monzo data
 - [ ] Show weather data
 - [x] Look into Firebase
 - [ ] (Stretch Goal) Record and display outside temperature
