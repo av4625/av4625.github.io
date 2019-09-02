@@ -87,30 +87,38 @@ function set_light(light, data)
 function set_current_average()
 {
     var total_temp = 0;
+    var number_of_rooms = 0;
 
     Object.keys(current_room_temperatures).forEach(function(room)
     {
-        total_temp += current_room_temperatures[room];
+        if (current_room_temperatures[room] !== 0)
+        {
+            total_temp += current_room_temperatures[room];
+            number_of_rooms++;
+        }
     });
 
     $('p#average_house_temp').html(
-        (total_temp / Object.keys(current_room_temperatures).length).toFixed(1)
-        + '&#8451;');
+        (total_temp / number_of_rooms).toFixed(1) + '&#8451;');
 }
 
 // Sets the weekly average house temperature
 function set_weekly_averages()
 {
     var total_temp = 0;
+    var number_of_rooms = 0;
 
     Object.keys(weekly_average_room_temperatures).forEach(function(room)
     {
-        total_temp += weekly_average_room_temperatures[room];
+        if (current_room_temperatures[room] !== 0)
+        {
+            total_temp += weekly_average_room_temperatures[room];
+            number_of_rooms++;
+        }
     });
 
     $('p#weekly_average_house_temp').html(
-        (total_temp / Object.keys(weekly_average_room_temperatures).length).toFixed(1)
-        + '&#8451;');
+        (total_temp / number_of_rooms).toFixed(1) + '&#8451;');
 }
 
 // Return the hex colour of the room given the temperature
