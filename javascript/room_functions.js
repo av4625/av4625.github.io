@@ -4,15 +4,21 @@
 
 var current_room_temperatures = {
     'kitchen':       0,
-    'bedroom':       0,
+    'main_bedroom':  0,
     'spare_bedroom': 0,
-    'study':         0
+    'hot_press':     0,
+    'dressing_room': 0,
+    'living_room':   0,
+    'dining_room':   0
 };
 var weekly_average_room_temperatures = {
     'kitchen':       0,
-    'bedroom':       0,
+    'main_bedroom':  0,
     'spare_bedroom': 0,
-    'study':         0
+    'hot_press':     0,
+    'dressing_room': 0,
+    'living_room':   0,
+    'dining_room':   0
 };
 
 var living_room_light_rgb = [0, 0, 0];
@@ -25,21 +31,16 @@ function set_temperature(room, data)
     current_room_temperatures[room] = temperature;
 
     // Set temperature rounded to 1 decimal place and with '*C' after it
-    $('div#' + room + ' p.temperature').html(temperature.toFixed(1) + '&#8451;');
+    $('div#' + room + ' p.temperature')
+        .html(temperature.toFixed(1) + '&#8451;');
 
-    if (room === 'spare_bedroom' || room === 'study')
-    {
-        // Set the colour of the room and room hall
-        $('div.' + room).css('background-color', generate_room_colour(temperature, is_old));
-    }
-    else
-    {
-        // Set the colour of the room
-        $('div#' + room).css('background-color', generate_room_colour(temperature, is_old));
-    }
+    // Set the colour of the room
+    $('div#' + room)
+        .css('background-color', generate_room_colour(temperature, is_old));
 
     // Set emoji
-    set_image('div#' + room + ' img#' + room + '_emoji', get_image($('div#' + room).css('background-color'), is_old));
+    set_image('div#' + room + ' img#' + room + '_emoji',
+        get_image($('div#' + room).css('background-color'), is_old));
 
     // Set the average house temperature
     set_current_average();
@@ -92,7 +93,9 @@ function set_current_average()
         total_temp += current_room_temperatures[room];
     });
 
-    $('p#average_house_temp').html((total_temp / Object.keys(current_room_temperatures).length).toFixed(1) + '&#8451;');
+    $('p#average_house_temp').html(
+        (total_temp / Object.keys(current_room_temperatures).length).toFixed(1)
+        + '&#8451;');
 }
 
 // Sets the weekly average house temperature
@@ -105,7 +108,9 @@ function set_weekly_averages()
         total_temp += weekly_average_room_temperatures[room];
     });
 
-    $('p#weekly_average_house_temp').html((total_temp / Object.keys(weekly_average_room_temperatures).length).toFixed(1) + '&#8451;');
+    $('p#weekly_average_house_temp').html(
+        (total_temp / Object.keys(weekly_average_room_temperatures).length).toFixed(1)
+        + '&#8451;');
 }
 
 // Return the hex colour of the room given the temperature
@@ -207,7 +212,9 @@ function set_bulb_colour(img_id, rgb_colour)
         for (var i = 0; i < image_data.data.length; i += 4)
         {
             // If the pixel is yellow set it to the new colour
-            if (image_data.data[i + 3] !== 0 && (image_data.data[i] > 200 && image_data.data[i + 2] < 100))
+            if (image_data.data[i + 3] !== 0 &&
+                (image_data.data[i] > 200 &&
+                    image_data.data[i + 2] < 100))
             {
                 image_data.data[i] = rgb_colour[0];
                 image_data.data[i + 1] = rgb_colour[1];
@@ -279,4 +286,3 @@ function are_arrays_equal(array_one, array_two)
 
     return true;
 }
-
