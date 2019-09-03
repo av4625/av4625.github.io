@@ -45,12 +45,14 @@ div#down_stairs {
     height: 90vh;
     float: left;
     margin-right: 5vw;
+    margin-bottom: 5vh;
 }
 
 div#up_stairs {
     width: 44.4vh;
     height: 48.8vh;
     float: left;
+    margin-bottom: 5vh;
 }
 
 /* For when they won't fit side by side */
@@ -60,15 +62,10 @@ div#up_stairs {
     div#house_container div#down_stairs {
         float: none;
         margin-right: 0vw;
-        margin-bottom: 5vh;
     }
 
     div#house_container div#up_stairs {
         float: none;
-    }
-
-    body div#house_container {
-        padding-bottom: 5vh;
     }
 }
 
@@ -81,17 +78,12 @@ div#up_stairs {
         height: 121.6vw;
         float: none;
         margin-right: 0vw;
-        margin-bottom: 5vh;
     }
 
     div#house_container div#up_stairs {
         width: 60vw;
         height: 66vw;
         float: none;
-    }
-
-    body div#house_container {
-        padding-bottom: 5vh;
     }
 }
 
