@@ -125,7 +125,7 @@ function set_weekly_averages()
 function generate_room_colour(temperature, is_date_old)
 {
     var upper_limit = 22;
-    var lower_limit = 19.5;
+    var lower_limit = 18;
 
     if (is_date_old)
     {
@@ -182,14 +182,19 @@ function set_image(img_id, image)
     }
 }
 
+// Convert string date made by Python to JavaScript
+function string_to_date(date)
+{
+    var d = date.split(/[- :]/);
+    return new Date(d[0], d[1] - 1, d[2], d[3], d[4], d[5]);
+}
+
 // Check if date is recent
 function is_date_old(date)
 {
     var now = new Date();
     var one_and_half_mins = 1.5 * 60 * 1000;
-    var d = date.split(/[- :]/);
-
-    var date_to_check = new Date(d[0], d[1] - 1, d[2], d[4], d[5], d[6]);
+    var date_to_check = string_to_date(date);
 
     if ((now - date_to_check) > one_and_half_mins)
     {
@@ -276,7 +281,7 @@ function hsv_to_rgb(h, s, v)
     return [ Math.round(r * 255), Math.round(g * 255), Math.round(b * 255) ];
 }
 
-// Return true if the arrys are the same else return false
+// Return true if the arrays are the same else return false
 function are_arrays_equal(array_one, array_two)
 {
     if (array_one.length != array_two.length)
