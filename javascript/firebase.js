@@ -11,6 +11,7 @@ var config = {
 $(document).ready(function()
 {
     listeners();
+    get_living_room_weeks();
 });
 
 firebase.initializeApp(config);
@@ -307,5 +308,121 @@ function listeners()
         {
             set_light('spare_bedroom_light', snapshot.val());
         }
+    });
+}
+
+// Add a number of days to a date object
+function add_days_to_date(date, number_of_days)
+{
+    date.setDate(date.getDate() + number_of_days);
+    return date;
+}
+
+// Get the date for a day of the week from the start date
+function get_date(start_date, day)
+{
+    var week_start = string_to_date(start_date);
+
+    switch (day)
+    {
+        case 'tuesday':
+            week_start = add_days_to_date(week_start, 1);
+            break;
+        case 'wednesday':
+            week_start = add_days_to_date(week_start, 2);
+            break;
+        case 'thursday':
+            week_start = add_days_to_date(week_start, 3);
+            break;
+        case 'friday':
+            week_start = add_days_to_date(week_start, 4);
+            break;
+        case 'saturday':
+            week_start = add_days_to_date(week_start, 5);
+            break;
+        case 'sunday':
+            week_start = add_days_to_date(week_start, 6);
+            break;
+    }
+
+    return week_start;
+}
+
+function get_living_room_weeks()
+{
+    database.ref('living_room/weeks').orderByKey().once('value').then(function(snapshot)
+    {
+        var data = [];
+
+        snapshot.forEach(function(child)
+        {
+            var json = child.val();
+            var keys = Object.keys(json);
+
+            if (keys.includes('monday'))
+            {
+                data.push(
+                [
+                    get_date(json['start_date'], 'monday'),
+                    json['monday'].total_temperature / json['monday'].entries
+                ]);
+            }
+
+            if (keys.includes('tuesday'))
+            {
+                data.push(
+                [
+                    get_date(json['start_date'], 'tuesday'),
+                    json['tuesday'].total_temperature / json['tuesday'].entries
+                ]);
+            }
+
+            if (keys.includes('wednesday'))
+            {
+                data.push(
+                [
+                    get_date(json['start_date'], 'wednesday'),
+                    json['wednesday'].total_temperature / json['wednesday'].entries
+                ]);
+            }
+
+            if (keys.includes('thursday'))
+            {
+                data.push(
+                [
+                    get_date(json['start_date'], 'thursday'),
+                    json['thursday'].total_temperature / json['thursday'].entries
+                ]);
+            }
+
+            if (keys.includes('friday'))
+            {
+                data.push(
+                [
+                    get_date(json['start_date'], 'friday'),
+                    json['friday'].total_temperature / json['friday'].entries
+                ]);
+            }
+
+            if (keys.includes('saturday'))
+            {
+                data.push(
+                [
+                    get_date(json['start_date'], 'saturday'),
+                    json['saturday'].total_temperature / json['saturday'].entries
+                ]);
+            }
+
+            if (keys.includes('sunday'))
+            {
+                data.push(
+                [
+                    get_date(json['start_date'], 'sunday'),
+                    json['sunday'].total_temperature / json['sunday'].entries
+                ]);
+            }
+        });
+
+        draw_living_room_all_time_chart(data);
     });
 }
