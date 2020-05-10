@@ -116,6 +116,16 @@ function listeners()
         }
     });
 
+    // Current outside temperature listener
+    var current_outside_ref = database.ref('outside/current');
+    current_outside_ref.on('value', function(snapshot)
+    {
+        if (snapshot.val() !== null)
+        {
+            set_outside_information(snapshot.val());
+        }
+    });
+
     // Main bedroom average temperature from previous week listener
     // Returns the current week if its the only week
     var weeks_main_bedroom_ref = database.ref('main_bedroom/weeks');

@@ -12,14 +12,23 @@ div.room {
 /*
     Div to hold the information
 */
-div#information {
-    top: 5%;
-    left: 5%;
+div.info {
     position: absolute;
-    width: 25%;
     box-sizing: border-box;
     border: 2px solid black;
     padding: 4px;
+}
+
+div#information {
+    top: 5%;
+    left: 5%;
+    width: 25%;
+}
+
+div#outside_information {
+    top: 25%;
+    left: 5%;
+    width: 25%;
 }
 
 /*

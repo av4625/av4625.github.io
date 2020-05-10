@@ -47,6 +47,23 @@ function set_temperature(room, data)
 
 }
 
+function set_outside_information(data)
+{
+    var is_old = is_date_old(data.date_time);
+    var temperature = parseFloat(data.temperature);
+
+    $('p#outside_temp').html(
+        parseFloat(data.temperature).toFixed(1) + '&#8451;');
+    $('p#outside_pressure').html(
+        parseFloat(data.pressure).toFixed(2) + ' hPa');
+    $('p#outside_humidity').html(
+        parseFloat(data.humidity).toFixed(2) + ' %RH');
+    $('p#outside_altitude').html(
+        parseFloat(data.altitude).toFixed(2) + 'm');
+    $('p#outside_battery').html(
+        parseFloat(data.battery).toFixed(2) + 'V');
+}
+
 // Set wether the light is on or off
 function set_light(light, data)
 {

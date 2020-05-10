@@ -12,4 +12,4 @@ To do list
 - [ ] Use media queries
 - [ ] Show weather data
 - [x] Look into Firebase
-- [ ] (Stretch Goal) Record and display outside temperature
+- [x] (Stretch Goal) Record and display outside temperature
