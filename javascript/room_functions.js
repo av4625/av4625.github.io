@@ -58,8 +58,6 @@ function set_outside_information(data)
         parseFloat(data.pressure).toFixed(2) + ' hPa');
     $('p#outside_humidity').html(
         parseFloat(data.humidity).toFixed(2) + ' %RH');
-    $('p#outside_altitude').html(
-        parseFloat(data.altitude).toFixed(2) + 'm');
     $('p#outside_battery').html(
         parseFloat(data.battery).toFixed(2) + 'V');
 }
