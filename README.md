@@ -9,7 +9,7 @@ To do list
 - [x] Show light colour
 - [x] Show average house temperature
 - [x] Show weekly average temperature
-- [ ] Use media queries
+- [x] Use media queries
 - [x] Show weather data
 - [x] Look into Firebase
 - [x] (Stretch Goal) Record and display outside temperature
