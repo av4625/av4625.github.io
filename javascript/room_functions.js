@@ -49,6 +49,7 @@ function set_outside_information(data)
         parseFloat(data.h).toFixed(2) + ' %RH');
     $('p#outside_battery').html(
         parseFloat(data.b).toFixed(2) + 'V');
+    $('p#outside_forecast').html(data.f);
 }
 
 // Set wether the light is on or off
