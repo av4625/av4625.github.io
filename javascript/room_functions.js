@@ -11,23 +11,14 @@ var current_room_temperatures = {
     'living_room':   0,
     'dining_room':   0
 };
-var weekly_average_room_temperatures = {
-    'kitchen':       0,
-    'main_bedroom':  0,
-    'spare_bedroom': 0,
-    'hot_press':     0,
-    'dressing_room': 0,
-    'living_room':   0,
-    'dining_room':   0
-};
 
 var living_room_light_rgb = [0, 0, 0];
 
 // Sets the room temperature, called when database updates
-function set_temperature(room, data)
+function set_inside_temperature(room, data)
 {
-    var is_old = is_date_old(data.date_time);
-    var temperature = parseFloat(data.temperature);
+    var is_old = is_date_old(data.e);
+    var temperature = parseFloat(data.t);
     current_room_temperatures[room] = temperature;
 
     // Set temperature rounded to 1 decimal place and with '*C' after it
@@ -44,22 +35,20 @@ function set_temperature(room, data)
 
     // Set the average house temperature
     set_current_average();
-
 }
 
 function set_outside_information(data)
 {
-    var is_old = is_date_old(data.date_time);
-    var temperature = parseFloat(data.temperature);
+    var is_old = is_date_old(data.e);
 
     $('p#outside_temp').html(
-        parseFloat(data.temperature).toFixed(1) + '&#8451;');
+        parseFloat(data.t).toFixed(1) + '&#8451;');
     $('p#outside_pressure').html(
-        parseFloat(data.pressure).toFixed(2) + ' hPa');
+        parseFloat(data.p).toFixed(2) + ' hPa');
     $('p#outside_humidity').html(
-        parseFloat(data.humidity).toFixed(2) + ' %RH');
+        parseFloat(data.h).toFixed(2) + ' %RH');
     $('p#outside_battery').html(
-        parseFloat(data.battery).toFixed(2) + 'V');
+        parseFloat(data.b).toFixed(2) + 'V');
 }
 
 // Set wether the light is on or off
@@ -114,25 +103,6 @@ function set_current_average()
     });
 
     $('p#average_house_temp').html(
-        (total_temp / number_of_rooms).toFixed(1) + '&#8451;');
-}
-
-// Sets the weekly average house temperature
-function set_weekly_averages()
-{
-    var total_temp = 0;
-    var number_of_rooms = 0;
-
-    Object.keys(weekly_average_room_temperatures).forEach(function(room)
-    {
-        if (current_room_temperatures[room] !== 0)
-        {
-            total_temp += weekly_average_room_temperatures[room];
-            number_of_rooms++;
-        }
-    });
-
-    $('p#weekly_average_house_temp').html(
         (total_temp / number_of_rooms).toFixed(1) + '&#8451;');
 }
 
@@ -197,19 +167,12 @@ function set_image(img_id, image)
     }
 }
 
-// Convert string date made by Python to JavaScript
-function string_to_date(date)
-{
-    var d = date.split(/[- :]/);
-    return new Date(d[0], d[1] - 1, d[2], d[3], d[4], d[5]);
-}
-
 // Check if date is recent
-function is_date_old(date)
+function is_date_old(epoch)
 {
     var now = new Date();
     var one_and_half_mins = 1.5 * 60 * 1000;
-    var date_to_check = string_to_date(date);
+    var date_to_check = new Date(epoch * 1000);
 
     if ((now - date_to_check) > one_and_half_mins)
     {
