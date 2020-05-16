@@ -10,6 +10,6 @@ To do list
 - [x] Show average house temperature
 - [x] Show weekly average temperature
 - [ ] Use media queries
-- [ ] Show weather data
+- [x] Show weather data
 - [x] Look into Firebase
 - [x] (Stretch Goal) Record and display outside temperature
