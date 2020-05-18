@@ -50,7 +50,7 @@ function set_outside_information(data)
     $('p#outside_battery').html(
         parseFloat(data.b).toFixed(2) + 'V');
     $('p#outside_forecast').html(data.f);
-    $('p#outside_forecast_static').html(data.s_f);
+    $('p#outside_forecast_sea_level').html(data.s_f);
 }
 
 // Set wether the light is on or off
