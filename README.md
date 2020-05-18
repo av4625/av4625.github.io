@@ -13,3 +13,11 @@ To do list
 - [x] Show weather data
 - [x] Look into Firebase
 - [x] (Stretch Goal) Record and display outside temperature
+
+House Measurements
+------------------
+
+![Ground Floor](/images/ground_floor.png)
+![First Floor](/images/first_floor.png)
+
+Using https://floorplancreator.net/plan/demo
