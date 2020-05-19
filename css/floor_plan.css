@@ -4,29 +4,6 @@
 }
 
 /*
-    Div to hold the information
-*/
-div#information_container {
-    position: relative;
-    float: left;
-    margin-top: 5%;
-    margin-left: 5%;
-    width: 25%;
-}
-div.info {
-    position: relative;
-    box-sizing: border-box;
-    border: 2px solid black;
-    padding: 4px;
-    float: left;
-    width: 100%;
-}
-
-div#outside_information {
-    margin-top: 5%;
-}
-
-/*
     Div to hold the house plans
 */
 div#house_container {
@@ -341,36 +318,4 @@ div#dressing_room {
     top: 70%;
     right: 0%;
     border: 2px solid black;
-}
-
-/*
-    Temperature
-*/
-p.temperature {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-/*
-    Room Name
-*/
-p.room_name {
-    position: absolute;
-    top: 1%;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-}
-
-/*
-    Room Image
-*/
-img.room_emoji {
-    position: absolute;
-    top: calc(50% + 20px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 22.5%;
 }

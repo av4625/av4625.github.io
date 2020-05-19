@@ -1,0 +1,31 @@
+/*
+    Temperature
+*/
+p.temperature {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/*
+    Room Name
+*/
+p.room_name {
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+/*
+    Room Image
+*/
+img.room_emoji {
+    position: absolute;
+    top: calc(50% + 20px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22.5%;
+}
