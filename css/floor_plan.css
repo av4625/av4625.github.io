@@ -3,12 +3,6 @@
     padding: 0;
 }
 
-div.room {
-    position: absolute;
-    box-sizing: border-box;
-    background: white;
-}
-
 /*
     Div to hold the information
 */
@@ -49,33 +43,38 @@ div#house_container {
 div.outside_edge {
     box-sizing: border-box;
     position: relative;
+    margin-bottom: 5vh;
+    margin-right: 5vw;
+    float: left;
+}
+
+div.room {
+    position: absolute;
+    box-sizing: border-box;
+    background: white;
 }
 
 div#down_stairs {
     width: 44.4vh;
     height: 90vh;
-    float: left;
-    margin-right: 5vw;
-    margin-bottom: 5vh;
 }
 
 div#up_stairs {
     width: 44.4vh;
     height: 48.8vh;
-    float: left;
-    margin-bottom: 5vh;
+}
+
+div#garden_room {
+    width: 30.6vh;
+    height: 25.3vh;
+    border: 2px solid black;
 }
 
 /* For when they won't fit side by side */
 @media only screen and (max-width: calc(45vw + 88.8vh)) and (min-width: calc(40vw + 44.4vh)) {
     /* Under each other
      * Add parent name to make it more specific so it overrides */
-    div#house_container div#down_stairs {
-        float: none;
-        margin-right: 0vw;
-    }
-
-    div#house_container div#up_stairs {
+    div#house_container div#down_stairs, div#house_container div#up_stairs {
         float: none;
     }
 }
@@ -88,7 +87,6 @@ div#up_stairs {
         width: 60vw;
         height: 121.6vw;
         float: none;
-        margin-right: 0vw;
     }
 
     div#house_container div#up_stairs {
