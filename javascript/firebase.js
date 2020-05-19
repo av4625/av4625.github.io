@@ -90,6 +90,16 @@ function listeners()
         }
     });
 
+    // Current garden room temperature listener
+    var current_garden_room_ref = database.child('garden_room/current');
+    current_garden_room_ref.on('value', function(snapshot)
+    {
+        if (snapshot.val() !== null)
+        {
+            set_inside_temperature('garden_room', snapshot.val());
+        }
+    });
+
     // Current outside temperature listener
     var current_outside_ref = database.child('outside/current');
     current_outside_ref.on('value', function(snapshot)
