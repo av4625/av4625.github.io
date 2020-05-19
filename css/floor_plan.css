@@ -122,44 +122,28 @@ div#garden_room {
 /*
     Living Room
 */
+div#living_room_window {
+    top: 0%;
+    left: 12.4%;
+    width: 43.9%;
+    height: -moz-calc(7.1% + 2.41px);
+    height: -webkit-calc(7.1% + 2.41px);
+    height: -o-calc(7.1% + 2.41px);
+    height: calc(7.1% + 2.41px);
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+    z-index: 1;
+}
+
 div#living_room {
     width: 67.5%;
-    height: 30.8%;
-    top: 0%;
+    height: 23.7%;
+    top: 7.1%;
     left: 0%;
     border-bottom: 2px solid black;
     border-left: 2px solid black;
     border-top: 2px solid black;
-}
-
-div#left_window_beam {
-    position: absolute;
-    box-sizing: border-box;
-    background-color: white;
-    width: 12.4%;
-    height: 7.1%;
-    top: 0%;
-    left: 0%;
-    padding-left: 1px;
-    padding-top: 1px;
-    border-bottom: 2px solid black;
-    border-right: 2px solid black;
-    z-index: 1;
-}
-
-div#right_window_beam {
-    position: absolute;
-    box-sizing: border-box;
-    background-color: white;
-    width: 11.2%;
-    height: 7.1%;
-    top: 0%;
-    left: 56.3%;
-    padding-right: 1px;
-    padding-top: 1px;
-    border-bottom: 2px solid black;
-    border-left: 2px solid black;
-    z-index: 1;
 }
 
 div#down_stairs_chimney {
@@ -182,14 +166,8 @@ div#down_stairs_chimney {
 */
 div#down_stairs_hall {
     width: 16.4%;
-    height: -moz-calc(29.6% + 2.1px);
-    height: -webkit-calc(29.6% + 2.1px);
-    height: -o-calc(29.6% + 2.1px);
-    height: calc(29.6% + 2.1px);
-    top: -moz-calc(7.1% - 2px);
-    top: -webkit-calc(7.1% - 2px);
-    top: -o-calc(7.1% - 2px);
-    top: calc(7.1% - 2px);
+    height: 29.6%;
+    top: 7.1%;
     left: 67.5%;
     border-top: 2px solid black;
     border-right: 2px solid black;
@@ -212,14 +190,8 @@ div#down_stairs_opening {
 */
 div#down_stairs_stairs {
     width: 16.1%;
-    height: -moz-calc(29.6% + 2.1px);
-    height: -webkit-calc(29.6% + 2.1px);
-    height: -o-calc(29.6% + 2.1px);
-    height: calc(29.6% + 2.1px);
-    top: -moz-calc(7.1% - 2px);
-    top: -webkit-calc(7.1% - 2px);
-    top: -o-calc(7.1% - 2px);
-    top: calc(7.1% - 2px);
+    height: 29.6%;
+    top: 7.1%;
     left: 83.9%;
     border-top: 2px solid black;
     border-right: 2px solid black;

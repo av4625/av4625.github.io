@@ -26,7 +26,7 @@ function set_inside_temperature(room, data)
         .html(temperature.toFixed(1) + '&#8451;');
 
     // Set the colour of the room
-    $('div#' + room)
+    $('div#' + room + ', div.' + room)
         .css('background-color', generate_room_colour(temperature, is_old));
 
     // Set emoji
