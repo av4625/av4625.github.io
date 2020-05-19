@@ -39,8 +39,6 @@ function set_inside_temperature(room, data)
 
 function set_outside_information(data)
 {
-    var is_old = is_date_old(data.e);
-
     $('p#outside_temp').html(
         parseFloat(data.t).toFixed(1) + '&#8451;');
     $('p#outside_pressure').html(
@@ -51,6 +49,15 @@ function set_outside_information(data)
         parseFloat(data.b).toFixed(2) + 'V');
     $('p#outside_forecast').html(data.f);
     $('p#outside_forecast_sea_level').html(data.s_f);
+
+    if (is_date_old(data.e, 6 * 60))
+    {
+        $('div#outside_information').css('border-color', '#AD42F4');
+    }
+    else
+    {
+        $('div#outside_information').css('border-color', 'black');
+    }
 }
 
 // Set wether the light is on or off
@@ -170,13 +177,13 @@ function set_image(img_id, image)
 }
 
 // Check if date is recent
-function is_date_old(epoch)
+function is_date_old(epoch, duration_secs = 1.5 * 60)
 {
     var now = new Date();
-    var one_and_half_mins = 1.5 * 60 * 1000;
+    var duration = duration_secs * 1000;
     var date_to_check = new Date(epoch * 1000);
 
-    if ((now - date_to_check) > one_and_half_mins)
+    if ((now - date_to_check) > duration)
     {
         return true;
     }
