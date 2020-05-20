@@ -7,7 +7,7 @@
 
         <link rel="stylesheet" href="css/floor_plan.css?v=2.0.2" type="text/css"/>
         <link rel="stylesheet" href="css/information.css?v=1.0.0" type="text/css"/>
-        <link rel="stylesheet" href="css/room_information.css?v=1.0.0" type="text/css"/>
+        <link rel="stylesheet" href="css/battery.css?v=1.0.0" type="text/css"/>
 
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
@@ -35,6 +35,10 @@
                 <br/>
                 <h4 id="outside_battery_header" class="info_headers">Battery</h4>
                 <p id="outside_battery" class="info_p"></p>
+                <div id="battery_container">
+                    <div id="battery_outer"><div id="battery_level"></div></div>
+                    <div id="battery_bump"></div>
+                  </div>
                 <br/>
                 <h4 id="outside_forecast_header" class="info_headers">Forecast</h4>
                 <p id="outside_forecast" class="info_p"></p>

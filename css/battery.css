@@ -1,0 +1,48 @@
+div#battery_container {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+}
+
+div#battery_outer {
+    border-radius: 3px;
+    border: 1.5px solid #444;
+    padding: 1px;
+    width: 12%;
+    height: 1em;
+}
+
+div#battery_bump {
+    border-radius: 2px;
+    background-color: #444;
+    margin: 2px;
+    width: 2px;
+    height: 0.475em;
+}
+
+div#battery_level {
+    border-radius: 2px;
+    width: 100%;
+    height: 100%;
+}
+
+div.low {
+    background-color: red;
+}
+
+div.medium_low {
+    background-color: orange;
+}
+
+div.medium {
+    background-color: yellow;
+}
+
+div.high {
+    background-color: #57ED69;
+}

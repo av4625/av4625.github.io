@@ -45,8 +45,12 @@ function set_outside_information(data)
         parseFloat(data.p).toFixed(2) + ' hPa');
     $('p#outside_humidity').html(
         parseFloat(data.h).toFixed(2) + ' %RH');
+
+    var battery_volts = parseFloat(data.b).toFixed(2);
     $('p#outside_battery').html(
-        parseFloat(data.b).toFixed(2) + 'V');
+        battery_volts + 'V');
+    set_battery(battery_volts);
+
     $('p#outside_forecast').html(data.f);
     $('p#outside_forecast_sea_level').html(data.s_f);
 
@@ -58,6 +62,39 @@ function set_outside_information(data)
     {
         $('div#outside_information').css('border-color', 'black');
     }
+}
+
+function set_battery(volts)
+{
+    if (volts < 3.7)
+    {
+        $('div#battery_level').removeClass().addClass('low');
+    }
+    else if (volts < 3.82)
+    {
+        $('div#battery_level').removeClass().addClass('medium_low');
+    }
+    else if (volts < 3.92)
+    {
+        $('div#battery_level').removeClass().addClass('medium');
+    }
+    else
+    {
+        $('div#battery_level').removeClass().addClass('high');
+    }
+
+    volts_min = 3.6;
+    volts_max = 4.2;
+
+    width_min = 5;
+    width_max = 100;
+
+    percent = (volts - volts_min) / (volts_max - volts_min);
+    width = percent * (width_max - width_min) + width_min;
+    width = (width > 100) ? 100 : width;
+    width = (width < 5) ? 5 : width;
+
+    $('div#battery_level').css('width', width + '%');
 }
 
 // Set wether the light is on or off
