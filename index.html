@@ -7,7 +7,7 @@
 
         <link rel="stylesheet" href="css/floor_plan.css?v=2.0.2" type="text/css"/>
         <link rel="stylesheet" href="css/information.css?v=1.0.0" type="text/css"/>
-        <link rel="stylesheet" href="css/room_information.css?v=1.0.0" type="text/css"/>
+        <link rel="stylesheet" href="css/main.css?v=1.0.0" type="text/css"/>
 
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
@@ -16,118 +16,122 @@
         <script src="javascript/room_functions.js?v=2.0.1" type="text/javascript"></script>
     </head>
     <body>
-        <div id="information_container">
-            <div  id="inside_information" class="info">
-                <h4 id="average_house_temp_header" class="info_headers">Average House Temperature</h4>
-                <p id="average_house_temp" class="info_p"></p>
-            </div>
-            <div id="outside_information" class="info">
-                <h3 id="outside_header" class="info_headers">Outside</h3>
-                <br/>
-                <h4 id="outside_temp_header" class="info_headers">Temperature</h4>
-                <p id="outside_temp" class="info_p"></p>
-                <br/>
-                <h4 id="outside_pressure_header" class="info_headers">Pressure</h4>
-                <p id="outside_pressure" class="info_p"></p>
-                <br/>
-                <h4 id="outside_humidity_header" class="info_headers">Humidity</h4>
-                <p id="outside_humidity" class="info_p"></p>
-                <br/>
-                <h4 id="outside_battery_header" class="info_headers">Battery</h4>
-                <p id="outside_battery" class="info_p"></p>
-                <br/>
-                <h4 id="outside_forecast_header" class="info_headers">Forecast</h4>
-                <p id="outside_forecast" class="info_p"></p>
-                <br/>
-                <h4 id="outside_forecast_sea_level_header" class="info_headers">Sea Level Forecast</h4>
-                <p id="outside_forecast_sea_level" class="info_p"></p>
-                <br/>
-            </div>
-        </div>
-        <div id="house_container">
-            <div id="down_stairs" class="outside_edge">
-
-                <div id="living_room_window" class="room living_room">
-                    <p class="room_name">Living Room</p>
+        <div id="container">
+            <div id="information_container">
+                <div  id="inside_information" class="info">
+                    <h4 id="average_house_temp_header" class="info_headers">Average House Temperature</h4>
+                    <p id="average_house_temp" class="info_p"></p>
                 </div>
-
-                <div id="living_room" class="room">
-                    <p class="temperature"></p>
-                    <div id="down_stairs_chimney"></div>
-                    <img id="living_room_emoji" class="room_emoji" src=""/>
-                </div>
-
-                <div id="down_stairs_hall" class="room">
-                    <p class="room_name">Hall</p>
-                    <p class="temperature"></p>
-                    <div id="down_stairs_opening"></div>
-                </div>
-
-                <div id="down_stairs_stairs" class="room">
-                    <p class="room_name">Stairs</p>
-                    <p class="temperature"></p>
-                </div>
-
-                <div id="dining_room" class="room">
-                    <p id="dining_room_name" class="room_name">Dining Room</p>
-                    <p class="temperature"></p>
-                    <img id="dining_room_emoji" class="room_emoji" src=""/>
-                </div>
-
-                <div id="bathroom" class="room">
-                    <p class="room_name">Bathroom</p>
-                    <p class="temperature"></p>
-                    <img id="bathroom_emoji" class="room_emoji" src=""/>
-                </div>
-
-                <div id="kitchen" class="room">
-                    <p class="room_name">Kitchen</p>
-                    <p class="temperature"></p>
-                    <img id="kitchen_emoji" class="room_emoji" src=""/>
+                <div id="outside_information" class="info">
+                    <h3 id="outside_header" class="info_headers">Outside</h3>
+                    <br/>
+                    <h4 id="outside_temp_header" class="info_headers">Temperature</h4>
+                    <p id="outside_temp" class="info_p"></p>
+                    <br/>
+                    <h4 id="outside_pressure_header" class="info_headers">Pressure</h4>
+                    <p id="outside_pressure" class="info_p"></p>
+                    <br/>
+                    <h4 id="outside_humidity_header" class="info_headers">Humidity</h4>
+                    <p id="outside_humidity" class="info_p"></p>
+                    <br/>
+                    <h4 id="outside_battery_header" class="info_headers">Battery</h4>
+                    <p id="outside_battery" class="info_p"></p>
+                    <br/>
+                    <h4 id="outside_forecast_header" class="info_headers">Forecast</h4>
+                    <p id="outside_forecast" class="info_p"></p>
+                    <br/>
+                    <h4 id="outside_forecast_sea_level_header" class="info_headers">Sea Level Forecast</h4>
+                    <p id="outside_forecast_sea_level" class="info_p"></p>
+                    <br/>
                 </div>
             </div>
-            <div id="up_stairs" class="outside_edge">
+            <div id="house_container">
+                <div id="house_flex_container">
+                    <div id="down_stairs" class="outside_edge">
 
-                <div id="spare_bedroom" class="room">
-                    <p class="room_name">Spare Bedroom</p>
-                    <p class="temperature"></p>
-                    <div id="up_stairs_chimney"></div>
-                    <img id="spare_bedroom_emoji" class="room_emoji" src=""/>
-                </div>
+                        <div id="living_room_window" class="room living_room">
+                            <p class="room_name">Living Room</p>
+                        </div>
 
-                <div id="up_stairs_hall" class="room">
-                    <p class="room_name">Hall</p>
-                    <p class="temperature"></p>
-                    <div id="up_stairs_opening"></div>
-                </div>
+                        <div id="living_room" class="room">
+                            <p class="temperature"></p>
+                            <div id="down_stairs_chimney"></div>
+                            <img id="living_room_emoji" class="room_emoji" src=""/>
+                        </div>
 
-                <div id="up_stairs_stairs" class="room">
-                    <p class="room_name">Stairs</p>
-                    <p class="temperature"></p>
-                </div>
+                        <div id="down_stairs_hall" class="room">
+                            <p class="room_name">Hall</p>
+                            <p class="temperature"></p>
+                            <div id="down_stairs_opening"></div>
+                        </div>
 
-                <div id="hot_press" class="room">
-                    <p class="room_name">Hot Press</p>
-                    <p class="temperature"></p>
-                    <img id="hot_press_emoji" class="room_emoji" src=""/>
-                </div>
+                        <div id="down_stairs_stairs" class="room">
+                            <p class="room_name">Stairs</p>
+                            <p class="temperature"></p>
+                        </div>
 
-                <div id="main_bedroom" class="room">
-                    <p id="main_bedroom_name" class="room_name">Main Bedroom</p>
-                    <p class="temperature"></p>
-                    <img id="main_bedroom_emoji" class="room_emoji" src=""/>
-                </div>
+                        <div id="dining_room" class="room">
+                            <p id="dining_room_name" class="room_name">Dining Room</p>
+                            <p class="temperature"></p>
+                            <img id="dining_room_emoji" class="room_emoji" src=""/>
+                        </div>
 
-                <div id="dressing_room" class="room">
-                    <p class="room_name">Dressing Room</p>
-                    <p class="temperature"></p>
-                    <img id="dressing_room_emoji" class="room_emoji" src=""/>
+                        <div id="bathroom" class="room">
+                            <p class="room_name">Bathroom</p>
+                            <p class="temperature"></p>
+                            <img id="bathroom_emoji" class="room_emoji" src=""/>
+                        </div>
+
+                        <div id="kitchen" class="room">
+                            <p class="room_name">Kitchen</p>
+                            <p class="temperature"></p>
+                            <img id="kitchen_emoji" class="room_emoji" src=""/>
+                        </div>
+                    </div>
+                    <div id="up_stairs" class="outside_edge">
+
+                        <div id="spare_bedroom" class="room">
+                            <p class="room_name">Spare Bedroom</p>
+                            <p class="temperature"></p>
+                            <div id="up_stairs_chimney"></div>
+                            <img id="spare_bedroom_emoji" class="room_emoji" src=""/>
+                        </div>
+
+                        <div id="up_stairs_hall" class="room">
+                            <p class="room_name">Hall</p>
+                            <p class="temperature"></p>
+                            <div id="up_stairs_opening"></div>
+                        </div>
+
+                        <div id="up_stairs_stairs" class="room">
+                            <p class="room_name">Stairs</p>
+                            <p class="temperature"></p>
+                        </div>
+
+                        <div id="hot_press" class="room">
+                            <p class="room_name">Hot Press</p>
+                            <p class="temperature"></p>
+                            <img id="hot_press_emoji" class="room_emoji" src=""/>
+                        </div>
+
+                        <div id="main_bedroom" class="room">
+                            <p id="main_bedroom_name" class="room_name">Main Bedroom</p>
+                            <p class="temperature"></p>
+                            <img id="main_bedroom_emoji" class="room_emoji" src=""/>
+                        </div>
+
+                        <div id="dressing_room" class="room">
+                            <p class="room_name">Dressing Room</p>
+                            <p class="temperature"></p>
+                            <img id="dressing_room_emoji" class="room_emoji" src=""/>
+                        </div>
+                    </div>
+                    <div id="garden_room" class="outside_edge">
+                        <p class="room_name">Garden Room</p>
+                        <p class="temperature"></p>
+                        <img id="garden_room_emoji" class="room_emoji" src=""/>
+                    </div>
                 </div>
-            </div>
-            <div id="garden_room" class="outside_edge">
-                <p class="room_name">Garden Room</p>
-                <p class="temperature"></p>
-                <img id="garden_room_emoji" class="room_emoji" src=""/>
             </div>
         </div>
     </body>
