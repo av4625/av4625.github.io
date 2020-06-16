@@ -54,7 +54,7 @@ function set_outside_information(data)
     $('p#outside_forecast').html(data.f);
     $('p#outside_forecast_sea_level').html(data.s_f);
 
-    if (is_date_old(data.e, 6 * 60))
+    if (is_date_old(data.e, 11 * 60))
     {
         $('div#outside_information').css('border-color', '#AD42F4');
     }
